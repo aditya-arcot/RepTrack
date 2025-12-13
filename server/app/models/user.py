@@ -1,9 +1,11 @@
 from datetime import datetime
-from app.core.db import Base
+from typing import TYPE_CHECKING, List
+
 from sqlalchemy import DateTime, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
-from typing import List, TYPE_CHECKING
+
+from app.core.db import Base
 
 if TYPE_CHECKING:
     from .workout import Workout

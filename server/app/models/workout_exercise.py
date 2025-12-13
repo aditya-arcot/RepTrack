@@ -1,23 +1,24 @@
 from datetime import datetime
-from typing import List, Optional, TYPE_CHECKING
-from app.core.db import Base
+from typing import TYPE_CHECKING, List, Optional
+
 from sqlalchemy import (
+    TEXT,
+    CheckConstraint,
     DateTime,
     ForeignKey,
+    Index,
     Integer,
     UniqueConstraint,
-    CheckConstraint,
     func,
-    TEXT,
-    Index,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.core.db import Base
 
 if TYPE_CHECKING:
     from .exercise import Exercise
-    from .workout import Workout
     from .set import Set
+    from .workout import Workout
 
 
 class WorkoutExercise(Base):

@@ -1,19 +1,21 @@
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
-from app.core.db import Base
+from typing import TYPE_CHECKING, Optional
+
 from sqlalchemy import (
+    TEXT,
+    CheckConstraint,
     DateTime,
     ForeignKey,
+    Index,
     Integer,
     Numeric,
     String,
     UniqueConstraint,
-    CheckConstraint,
     func,
-    TEXT,
-    Index,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.core.db import Base
 
 if TYPE_CHECKING:
     from .workout_exercise import WorkoutExercise

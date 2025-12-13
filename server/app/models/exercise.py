@@ -1,8 +1,10 @@
 from datetime import datetime
-from typing import List, Optional, TYPE_CHECKING
-from app.core.db import Base
-from sqlalchemy import DateTime, ForeignKey, String, func, TEXT
+from typing import TYPE_CHECKING, List, Optional
+
+from sqlalchemy import TEXT, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.core.db import Base
 
 if TYPE_CHECKING:
     from .muscle_group import MuscleGroup
