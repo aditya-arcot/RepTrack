@@ -23,6 +23,6 @@ class MuscleGroup(Base):
     )
 
     exercises: Mapped[List["Exercise"]] = relationship(
-        back_populates="muscle_group",
-        passive_deletes=True,
+        secondary="exercise_muscle_groups",
+        back_populates="muscle_groups",
     )

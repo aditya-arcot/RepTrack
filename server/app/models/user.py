@@ -8,6 +8,7 @@ from sqlalchemy.sql import func
 from app.core.db import Base
 
 if TYPE_CHECKING:
+    from .exercise import Exercise
     from .workout import Workout
 
 
@@ -49,6 +50,10 @@ class User(Base):
         nullable=False,
     )
 
+    exercises: Mapped[List["Exercise"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
     workouts: Mapped[List["Workout"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
