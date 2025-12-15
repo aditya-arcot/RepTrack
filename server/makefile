@@ -4,7 +4,7 @@ dev:
 	uv run fastapi dev app/main.py --port 8080
 
 test:
-	uv run pytest
+	uv run pytest -v
 
 check_migrations:
 	uv run alembic check
