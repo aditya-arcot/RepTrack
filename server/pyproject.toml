@@ -6,9 +6,13 @@ dependencies = [
     "aiosmtplib>=5.0.0",
     "alembic[tz]>=1.17.2",
     "asyncpg>=0.31.0",
+    # pin until passlib supports latest
+    "bcrypt==4.3.0",
     "fastapi[standard]>=0.124.4",
     "greenlet>=3.3.0",
+    "passlib>=1.7.4",
     "pydantic-settings>=2.12.0",
+    "python-dotenv>=1.2.1",
     "python-json-logger>=4.0.0",
 ]
 

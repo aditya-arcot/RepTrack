@@ -13,6 +13,12 @@ class Settings(BaseSettings):
     def IS_PROD(self) -> bool:
         return self.ENV == "stage" or self.ENV == "prod"
 
+    ADMIN_USERNAME: str
+    ADMIN_EMAIL: str
+    ADMIN_FIRST_NAME: str
+    ADMIN_LAST_NAME: str
+    ADMIN_PASSWORD: str
+
     POSTGRES_HOST: str
     POSTGRES_PORT: int
     POSTGRES_DB: str
