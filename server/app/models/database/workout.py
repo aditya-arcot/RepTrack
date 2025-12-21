@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List
 
 from sqlalchemy import TEXT, DateTime, ForeignKey, Index, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -27,10 +27,10 @@ class Workout(Base):
         DateTime(timezone=True),
         nullable=False,
     )
-    ended_at: Mapped[Optional[datetime]] = mapped_column(
+    ended_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
     )
-    notes: Mapped[Optional[str]] = mapped_column(TEXT)
+    notes: Mapped[str | None] = mapped_column(TEXT)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -43,8 +43,8 @@ class Workout(Base):
         nullable=False,
     )
 
-    user: Mapped["User"] = relationship(back_populates="workouts")
-    workout_exercises: Mapped[List["WorkoutExercise"]] = relationship(
+    user: Mapped[User] = relationship(back_populates="workouts")
+    workout_exercises: Mapped[List[WorkoutExercise]] = relationship(
         back_populates="workout",
         cascade="all, delete-orphan",
         passive_deletes=True,

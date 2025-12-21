@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List
 
 from sqlalchemy import (
     TEXT,
@@ -42,7 +42,7 @@ class WorkoutExercise(Base):
         nullable=False,
     )
     position: Mapped[int] = mapped_column(Integer, nullable=False)
-    notes: Mapped[Optional[str]] = mapped_column(TEXT)
+    notes: Mapped[str | None] = mapped_column(TEXT)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -55,9 +55,9 @@ class WorkoutExercise(Base):
         nullable=False,
     )
 
-    workout: Mapped["Workout"] = relationship(back_populates="workout_exercises")
-    exercise: Mapped["Exercise"] = relationship(back_populates="workout_exercises")
-    sets: Mapped[List["Set"]] = relationship(
+    workout: Mapped[Workout] = relationship(back_populates="workout_exercises")
+    exercise: Mapped[Exercise] = relationship(back_populates="workout_exercises")
+    sets: Mapped[List[Set]] = relationship(
         back_populates="workout_exercise",
         cascade="all, delete-orphan",
         passive_deletes=True,

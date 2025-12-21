@@ -60,14 +60,14 @@ class User(Base):
         nullable=False,
     )
 
-    reviewed_access_requests: Mapped[list["AccessRequest"]] = relationship(
+    reviewed_access_requests: Mapped[list[AccessRequest]] = relationship(
         back_populates="reviewer"
     )
-    exercises: Mapped[List["Exercise"]] = relationship(
+    exercises: Mapped[List[Exercise]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
     )
-    workouts: Mapped[List["Workout"]] = relationship(
+    workouts: Mapped[List[Workout]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
         passive_deletes=True,

@@ -1,4 +1,4 @@
-from typing import Generic, Literal, Optional, TypeVar
+from typing import Generic, Literal, TypeVar
 
 from pydantic import BaseModel
 
@@ -9,4 +9,4 @@ class ApiResponse(BaseModel, Generic[T]):
     status: Literal["success", "error"]
     code: str
     message: str
-    data: Optional[T] = None
+    data: T | None = None

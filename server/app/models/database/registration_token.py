@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     DateTime,
@@ -29,7 +29,7 @@ class RegistrationToken(Base):
         String(255),
         nullable=False,
     )
-    access_request_id: Mapped[Optional[int]] = mapped_column(
+    access_request_id: Mapped[int | None] = mapped_column(
         ForeignKey(
             "access_requests.id",
             ondelete="SET NULL",
@@ -41,7 +41,7 @@ class RegistrationToken(Base):
         unique=True,
         nullable=False,
     )
-    used_at: Mapped[Optional[datetime]] = mapped_column(
+    used_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
     )
     created_at: Mapped[datetime] = mapped_column(
@@ -60,7 +60,7 @@ class RegistrationToken(Base):
     def is_used(self) -> bool:
         return self.used_at is not None
 
-    access_request: Mapped[Optional["AccessRequest"]] = relationship(
+    access_request: Mapped[AccessRequest | None] = relationship(
         "AccessRequest",
         back_populates="registration_tokens",
     )

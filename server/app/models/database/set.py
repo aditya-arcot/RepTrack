@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     TEXT,
@@ -44,10 +44,10 @@ class Set(Base):
         nullable=False,
     )
     set_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    reps: Mapped[Optional[int]] = mapped_column(Integer)
-    weight: Mapped[Optional[float]] = mapped_column(Numeric(6, 2))
-    unit: Mapped[Optional[str]] = mapped_column(String(255))
-    notes: Mapped[Optional[str]] = mapped_column(TEXT)
+    reps: Mapped[int | None] = mapped_column(Integer)
+    weight: Mapped[float | None] = mapped_column(Numeric(6, 2))
+    unit: Mapped[str | None] = mapped_column(String(255))
+    notes: Mapped[str | None] = mapped_column(TEXT)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -60,4 +60,4 @@ class Set(Base):
         nullable=False,
     )
 
-    workout_exercise: Mapped["WorkoutExercise"] = relationship(back_populates="sets")
+    workout_exercise: Mapped[WorkoutExercise] = relationship(back_populates="sets")

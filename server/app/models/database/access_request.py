@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     DateTime,
@@ -56,10 +56,10 @@ class AccessRequest(Base):
         nullable=False,
         default=AccessRequestStatus.PENDING,
     )
-    reviewed_at: Mapped[Optional[datetime]] = mapped_column(
+    reviewed_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
     )
-    reviewed_by: Mapped[Optional[int]] = mapped_column(
+    reviewed_by: Mapped[int | None] = mapped_column(
         ForeignKey("users.id", ondelete="RESTRICT"),
     )
     created_at: Mapped[datetime] = mapped_column(
@@ -74,11 +74,11 @@ class AccessRequest(Base):
         nullable=False,
     )
 
-    reviewer: Mapped[Optional["User"]] = relationship(
+    reviewer: Mapped[User | None] = relationship(
         "User",
         back_populates="reviewed_access_requests",
     )
-    registration_tokens: Mapped[list["RegistrationToken"]] = relationship(
+    registration_tokens: Mapped[list[RegistrationToken]] = relationship(
         "RegistrationToken",
         back_populates="access_request",
         passive_deletes=True,
