@@ -1,7 +1,7 @@
 .PHONY: dev test check_migrations manual_migration auto_migration run_migrations
 
 dev:
-	uv run fastapi dev app/main.py --port 8080
+	uv run fastapi dev app/main.py
 
 test:
 	uv run pytest -v
