@@ -1,8 +1,8 @@
 """seed admin user
 
-Revision ID: 46d2edc8a2e0
+Revision ID: b38ada12f56b
 Revises: 1e1a6b37847d
-Create Date: 2025-12-16 10:32:50.248155-06:00
+Create Date: 2025-12-22 10:54:09.798302-06:00
 
 """
 
@@ -12,10 +12,10 @@ from typing import Sequence, Union
 import sqlalchemy as sa
 from alembic import op
 from dotenv import load_dotenv
-from passlib.context import CryptContext
+from pwdlib import PasswordHash
 
 # revision identifiers, used by Alembic.
-revision: str = "46d2edc8a2e0"
+revision: str = "b38ada12f56b"
 down_revision: Union[str, Sequence[str], None] = "1e1a6b37847d"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,11 +30,11 @@ password = os.getenv("ADMIN_PASSWORD")
 if not all([username, email, first_name, last_name, password]):
     raise ValueError("Admin user environment variables are not fully set")
 
-pwd_context = CryptContext(schemes=["bcrypt"])
+password_hash = PasswordHash.recommended()
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    return password_hash.hash(password)
 
 
 def upgrade() -> None:
@@ -50,7 +50,8 @@ def upgrade() -> None:
                 first_name = EXCLUDED.first_name,
                 last_name = EXCLUDED.last_name,
                 password_hash = EXCLUDED.password_hash,
-                is_admin = true
+                is_admin = true,
+                updated_at = NOW()
             """
         ),
         {
