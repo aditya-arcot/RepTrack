@@ -1,3 +1,4 @@
+from fastapi import status
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,7 +21,7 @@ async def test_request_access(client: AsyncClient):
         },
     )
 
-    assert resp.status_code == 200
+    assert resp.status_code == status.HTTP_200_OK
     body = resp.json()
     assert body["status"] == "success"
     assert body["code"] == "ACCESS_REQUEST_CREATED"
@@ -48,7 +49,7 @@ async def test_request_access_approved(client: AsyncClient, session: AsyncSessio
         },
     )
 
-    assert resp.status_code == 200
+    assert resp.status_code == status.HTTP_200_OK
     body = resp.json()
     assert body["status"] == "success"
     assert body["code"] == "ACCESS_REQUEST_ALREADY_APPROVED"

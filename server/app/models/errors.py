@@ -1,3 +1,6 @@
+from fastapi import status
+
+
 class HttpError(Exception):
     code: str
     message: str
@@ -12,16 +15,16 @@ class HttpError(Exception):
 class EmailAlreadyRegistered(HttpError):
     code = "EMAIL_ALREADY_REGISTERED"
     message = "This email is already registered. Please log in."
-    http_status = 409
+    http_status = status.HTTP_409_CONFLICT
 
 
 class AccessRequestPending(HttpError):
     code = "ACCESS_REQUEST_PENDING"
     message = "An access request for this email is already pending"
-    http_status = 409
+    http_status = status.HTTP_409_CONFLICT
 
 
 class AccessRequestRejected(HttpError):
     code = "ACCESS_REQUEST_REJECTED"
     message = "An access request for this email was previously rejected"
-    http_status = 403
+    http_status = status.HTTP_403_FORBIDDEN
