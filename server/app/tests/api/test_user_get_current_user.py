@@ -6,24 +6,13 @@ from app.core.config import settings
 from app.models.database.user import User
 from app.models.errors import InvalidCredentials
 from app.models.schemas.user import UserPublic
-
-
-async def login_and_get_token(client: AsyncClient):
-    resp = await client.post(
-        "/api/auth/login",
-        data={
-            "username": settings.ADMIN_USERNAME,
-            "password": settings.ADMIN_PASSWORD,
-        },
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
-    )
-    body = resp.json()
-    return body["access_token"]
+from app.tests.api.utilities import HttpMethod, login_and_get_token, make_http_request
 
 
 async def make_request(client: AsyncClient, token: str | None = None):
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    return await client.get("/api/users/current", headers=headers)
+    return await make_http_request(
+        client, method=HttpMethod.GET, endpoint="/api/users/current", token=token
+    )
 
 
 async def test_get_current_user(client: AsyncClient):

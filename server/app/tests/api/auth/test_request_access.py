@@ -10,13 +10,16 @@ from app.models.errors import (
     EmailAlreadyRegistered,
 )
 from app.models.schemas.auth import RequestAccessResponse
+from app.tests.api.utilities import HttpMethod, make_http_request
 
 
 async def make_request(
     client: AsyncClient, email: str, first_name: str, last_name: str
 ):
-    return await client.post(
-        "/api/auth/request-access",
+    return await make_http_request(
+        client,
+        method=HttpMethod.POST,
+        endpoint="/api/auth/request-access",
         json={
             "email": email,
             "first_name": first_name,
