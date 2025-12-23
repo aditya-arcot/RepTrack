@@ -20,8 +20,8 @@ api_router = APIRouter(prefix="/auth", tags=["Auth"])
 async def request_access_endpoint(
     payload: RequestAccessRequest,
     background_tasks: BackgroundTasks,
-    db: AsyncSession = Depends(get_db),
-    email_svc: EmailService = Depends(get_email_service),
+    db: Annotated[AsyncSession, Depends(get_db)],
+    email_svc: Annotated[EmailService, Depends(get_email_service)],
 ) -> RequestAccessResponse:
     result = await request_access(
         first_name=payload.first_name,
@@ -48,7 +48,7 @@ async def request_access_endpoint(
 @api_router.post("/login")
 async def login_endpoint(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db: AsyncSession = Depends(get_db),
+    db: Annotated[AsyncSession, Depends(get_db)],
 ) -> LoginResponse:
     token = await login(username=form_data.username, password=form_data.password, db=db)
     return LoginResponse(access_token=token, token_type="bearer")
