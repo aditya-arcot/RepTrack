@@ -9,7 +9,7 @@ api_router = APIRouter()
 
 
 @api_router.get("/users/current")
-def get_current_user_route(
+def get_current_user_endpoint(
     user: Annotated[UserPublic, Depends(get_current_user)],
 ) -> UserPublic:
     return user

@@ -4,5 +4,5 @@ api_router = APIRouter()
 
 
 @api_router.get("/health")
-def get_health_route() -> str:
+def get_health_endpoint() -> str:
     return "ok"

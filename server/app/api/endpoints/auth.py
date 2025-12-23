@@ -17,7 +17,7 @@ api_router = APIRouter(prefix="/auth")
 
 
 @api_router.post("/request-access")
-async def request_access_route(
+async def request_access_endpoint(
     payload: RequestAccessRequest,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
@@ -46,7 +46,7 @@ async def request_access_route(
 
 
 @api_router.post("/login")
-async def login_route(
+async def login_endpoint(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: AsyncSession = Depends(get_db),
 ) -> LoginResponse:
