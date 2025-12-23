@@ -1,17 +1,17 @@
-import logging
+from typing import Annotated
 
 from fastapi import APIRouter, BackgroundTasks, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_db
 from app.models.schemas.auth import (
+    LoginResponse,
     RequestAccessRequest,
     RequestAccessResponse,
 )
-from app.services.auth import request_access
+from app.services.auth import login, request_access
 from app.services.email import EmailService, get_email_service
-
-logger = logging.getLogger(__name__)
 
 api_router = APIRouter(prefix="/auth")
 
@@ -43,3 +43,12 @@ async def request_access_route(
         detail=detail,
         access_request_id=access_request.id,
     )
+
+
+@api_router.post("/login")
+async def login_route(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: AsyncSession = Depends(get_db),
+) -> LoginResponse:
+    token = await login(username=form_data.username, password=form_data.password, db=db)
+    return LoginResponse(access_token=token, token_type="bearer")

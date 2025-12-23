@@ -25,3 +25,8 @@ class AccessRequestPending(HTTPError):
 class AccessRequestRejected(HTTPError):
     status_code = status.HTTP_403_FORBIDDEN
     detail = "An access request for this email was previously rejected"
+
+
+class InvalidCredentials(HTTPError):
+    status_code = status.HTTP_401_UNAUTHORIZED
+    detail = "Invalid credentials"

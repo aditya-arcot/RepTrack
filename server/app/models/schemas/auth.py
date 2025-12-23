@@ -10,3 +10,8 @@ class RequestAccessRequest(BaseModel):
 class RequestAccessResponse(BaseModel):
     detail: str
     access_request_id: int
+
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str

@@ -5,12 +5,14 @@ from fastapi import BackgroundTasks
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.security import authenticate_user, create_access_token
 from app.models.database.access_request import AccessRequest, AccessRequestStatus
 from app.models.database.user import User
 from app.models.errors import (
     AccessRequestPending,
     AccessRequestRejected,
     EmailAlreadyRegistered,
+    InvalidCredentials,
 )
 
 from .email import EmailService
@@ -83,3 +85,15 @@ async def request_access(
         already_approved=False,
         access_request=access_request,
     )
+
+
+async def login(username: str, password: str, db: AsyncSession) -> str:
+    logger.info(f"Login attempt for user: {username}")
+
+    user = await authenticate_user(username, password, db)
+    if not user:
+        raise InvalidCredentials()
+
+    data = {"sub": user.username}
+    token = create_access_token(data)
+    return token
