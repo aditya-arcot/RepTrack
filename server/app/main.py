@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 
 setup_logging()
 
-logger.debug("Logging initialized")
-logger.debug("Settings loaded: %s", settings.model_dump())
+logger.debug("Initialized logging")
+logger.debug("Loaded settings: %s", settings.model_dump())
 
 
 def create_app() -> FastAPI:
@@ -22,5 +22,5 @@ def create_app() -> FastAPI:
     return app
 
 
-logger.info("Starting app...")
+logger.info("Starting app")
 app = create_app()

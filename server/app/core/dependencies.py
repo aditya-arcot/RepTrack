@@ -37,6 +37,8 @@ async def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: AsyncSession = Depends(get_db),
 ) -> UserPublic:
+    logger.info("Getting current user using token")
+
     try:
         # checks expiration
         payload = jwt.decode(

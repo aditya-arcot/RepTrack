@@ -34,7 +34,7 @@ async def request_access(
     db: AsyncSession,
     email_svc: EmailService,
 ) -> RequestAccessResult:
-    logger.info(f"Access request received for email: {email}")
+    logger.info(f"Received access request for email: {email}")
 
     existing_user = (
         await db.execute(select(User).where(User.email == email))
@@ -88,7 +88,7 @@ async def request_access(
 
 
 async def login(username: str, password: str, db: AsyncSession) -> str:
-    logger.info(f"Login attempt for user: {username}")
+    logger.info(f"Received login attempt for user: {username}")
 
     user = await authenticate_user(username, password, db)
     if not user:
