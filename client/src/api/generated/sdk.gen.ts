@@ -34,115 +34,131 @@ export type Options<
     meta?: Record<string, unknown>
 }
 
-/**
- * Get Access Requests Endpoint
- */
-export const getAccessRequestsEndpointApiAdminAccessRequestsGet = <
-    ThrowOnError extends boolean = false,
->(
-    options?: Options<
-        GetAccessRequestsEndpointApiAdminAccessRequestsGetData,
-        ThrowOnError
-    >
-) =>
-    (options?.client ?? client).get<
-        GetAccessRequestsEndpointApiAdminAccessRequestsGetResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                in: 'cookie',
-                name: 'access_token',
-                type: 'apiKey',
+export class AdminService {
+    /**
+     * Get Access Requests Endpoint
+     */
+    public static getAccessRequestsEndpointApiAdminAccessRequestsGet<
+        ThrowOnError extends boolean = false,
+    >(
+        options?: Options<
+            GetAccessRequestsEndpointApiAdminAccessRequestsGetData,
+            ThrowOnError
+        >
+    ) {
+        return (options?.client ?? client).get<
+            GetAccessRequestsEndpointApiAdminAccessRequestsGetResponses,
+            unknown,
+            ThrowOnError
+        >({
+            responseType: 'json',
+            security: [
+                {
+                    in: 'cookie',
+                    name: 'access_token',
+                    type: 'apiKey',
+                },
+            ],
+            url: '/api/admin/access-requests',
+            ...options,
+        })
+    }
+}
+
+export class AuthService {
+    /**
+     * Request Access Endpoint
+     */
+    public static requestAccessEndpointApiAuthRequestAccessPost<
+        ThrowOnError extends boolean = false,
+    >(
+        options: Options<
+            RequestAccessEndpointApiAuthRequestAccessPostData,
+            ThrowOnError
+        >
+    ) {
+        return (options.client ?? client).post<
+            RequestAccessEndpointApiAuthRequestAccessPostResponses,
+            RequestAccessEndpointApiAuthRequestAccessPostErrors,
+            ThrowOnError
+        >({
+            responseType: 'json',
+            url: '/api/auth/request-access',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers,
             },
-        ],
-        url: '/api/admin/access-requests',
-        ...options,
-    })
+        })
+    }
 
-/**
- * Request Access Endpoint
- */
-export const requestAccessEndpointApiAuthRequestAccessPost = <
-    ThrowOnError extends boolean = false,
->(
-    options: Options<
-        RequestAccessEndpointApiAuthRequestAccessPostData,
-        ThrowOnError
-    >
-) =>
-    (options.client ?? client).post<
-        RequestAccessEndpointApiAuthRequestAccessPostResponses,
-        RequestAccessEndpointApiAuthRequestAccessPostErrors,
-        ThrowOnError
-    >({
-        url: '/api/auth/request-access',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers,
-        },
-    })
-
-/**
- * Login Endpoint
- */
-export const loginEndpointApiAuthLoginPost = <
-    ThrowOnError extends boolean = false,
->(
-    options: Options<LoginEndpointApiAuthLoginPostData, ThrowOnError>
-) =>
-    (options.client ?? client).post<
-        LoginEndpointApiAuthLoginPostResponses,
-        LoginEndpointApiAuthLoginPostErrors,
-        ThrowOnError
-    >({
-        url: '/api/auth/login',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers,
-        },
-    })
-
-/**
- * Get Health Endpoint
- */
-export const getHealthEndpointApiHealthGet = <
-    ThrowOnError extends boolean = false,
->(
-    options?: Options<GetHealthEndpointApiHealthGetData, ThrowOnError>
-) =>
-    (options?.client ?? client).get<
-        GetHealthEndpointApiHealthGetResponses,
-        unknown,
-        ThrowOnError
-    >({ url: '/api/health', ...options })
-
-/**
- * Get Current User Endpoint
- */
-export const getCurrentUserEndpointApiUsersCurrentGet = <
-    ThrowOnError extends boolean = false,
->(
-    options?: Options<
-        GetCurrentUserEndpointApiUsersCurrentGetData,
-        ThrowOnError
-    >
-) =>
-    (options?.client ?? client).get<
-        GetCurrentUserEndpointApiUsersCurrentGetResponses,
-        unknown,
-        ThrowOnError
-    >({
-        security: [
-            {
-                in: 'cookie',
-                name: 'access_token',
-                type: 'apiKey',
+    /**
+     * Login Endpoint
+     */
+    public static loginEndpointApiAuthLoginPost<
+        ThrowOnError extends boolean = false,
+    >(options: Options<LoginEndpointApiAuthLoginPostData, ThrowOnError>) {
+        return (options.client ?? client).post<
+            LoginEndpointApiAuthLoginPostResponses,
+            LoginEndpointApiAuthLoginPostErrors,
+            ThrowOnError
+        >({
+            url: '/api/auth/login',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers,
             },
-        ],
-        url: '/api/users/current',
-        ...options,
-    })
+        })
+    }
+}
+
+export class HealthService {
+    /**
+     * Get Health Endpoint
+     */
+    public static getHealthEndpointApiHealthGet<
+        ThrowOnError extends boolean = false,
+    >(options?: Options<GetHealthEndpointApiHealthGetData, ThrowOnError>) {
+        return (options?.client ?? client).get<
+            GetHealthEndpointApiHealthGetResponses,
+            unknown,
+            ThrowOnError
+        >({
+            responseType: 'json',
+            url: '/api/health',
+            ...options,
+        })
+    }
+}
+
+export class UserService {
+    /**
+     * Get Current User Endpoint
+     */
+    public static getCurrentUserEndpointApiUsersCurrentGet<
+        ThrowOnError extends boolean = false,
+    >(
+        options?: Options<
+            GetCurrentUserEndpointApiUsersCurrentGetData,
+            ThrowOnError
+        >
+    ) {
+        return (options?.client ?? client).get<
+            GetCurrentUserEndpointApiUsersCurrentGetResponses,
+            unknown,
+            ThrowOnError
+        >({
+            responseType: 'json',
+            security: [
+                {
+                    in: 'cookie',
+                    name: 'access_token',
+                    type: 'apiKey',
+                },
+            ],
+            url: '/api/users/current',
+            ...options,
+        })
+    }
+}
