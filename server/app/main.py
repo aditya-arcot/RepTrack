@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from .api import api_router
 from .core.config import settings
@@ -18,5 +19,11 @@ if __name__ == "__main__":
     logger.info("Starting app")
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[settings.CLIENT_URL],
+    allow_credentials=True,
+    allow_methods=["*"],
+)
 app.add_exception_handler(Exception, exception_handler)
 app.include_router(api_router, prefix="/api")
