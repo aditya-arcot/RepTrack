@@ -1,12 +1,17 @@
+import { includeIgnoreFile } from '@eslint/compat'
 import js from '@eslint/js'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import globals from 'globals'
+import { fileURLToPath, URL } from 'node:url'
 import tseslint from 'typescript-eslint'
 
+const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
+
 export default defineConfig([
-    globalIgnores(['dist', 'src/components/ui', 'src/api']),
+    includeIgnoreFile(gitignorePath),
+    globalIgnores(['src/components/ui', 'src/api']),
     {
         files: ['src/**/*.{ts,tsx}'],
         extends: [
@@ -23,6 +28,11 @@ export default defineConfig([
                 project: 'tsconfig.app.json',
             },
         },
+    },
+    {
+        files: ['*.{js, ts}'],
+        ignores: ['vite.config.ts'],
+        extends: [js.configs.recommended],
     },
     {
         files: ['vite.config.ts'],
