@@ -29,6 +29,7 @@ export default defineConfig([
             },
         },
         rules: {
+            'no-console': 'warn',
             'no-restricted-imports': [
                 'warn',
                 {
