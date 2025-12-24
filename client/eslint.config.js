@@ -28,6 +28,20 @@ export default defineConfig([
                 project: 'tsconfig.app.json',
             },
         },
+        rules: {
+            'no-restricted-imports': [
+                'warn',
+                {
+                    patterns: [
+                        {
+                            group: ['.*', 'src/'],
+                            message:
+                                'Use @/ path alias instead of relative path',
+                        },
+                    ],
+                },
+            ],
+        },
     },
     {
         files: ['*.{js, ts}'],
