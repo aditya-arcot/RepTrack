@@ -5,6 +5,7 @@ export default defineConfig({
     output: 'src/api/generated',
     plugins: [
         '@hey-api/client-axios',
+        'zod',
         {
             name: '@hey-api/sdk',
             asClass: true,

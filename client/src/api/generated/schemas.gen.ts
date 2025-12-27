@@ -18,10 +18,14 @@ export const LoginRequestSchema = {
     properties: {
         username: {
             type: 'string',
+            maxLength: 50,
+            minLength: 3,
             title: 'Username',
         },
         password: {
             type: 'string',
+            maxLength: 64,
+            minLength: 8,
             title: 'Password',
         },
     },
@@ -39,10 +43,14 @@ export const RequestAccessRequestSchema = {
         },
         first_name: {
             type: 'string',
+            maxLength: 50,
+            minLength: 1,
             title: 'First Name',
         },
         last_name: {
             type: 'string',
+            maxLength: 50,
+            minLength: 1,
             title: 'Last Name',
         },
     },
