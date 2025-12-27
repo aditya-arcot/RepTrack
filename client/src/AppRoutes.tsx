@@ -18,7 +18,6 @@ export function AppRoutes() {
             >
                 <Route index element={<Dashboard />} />
             </Route>
-
             <Route
                 path="/login"
                 element={

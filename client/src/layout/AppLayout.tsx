@@ -14,8 +14,8 @@ export function AppLayout() {
     }
 
     return (
-        <div className="flex flex-col">
-            <header className="border-b">
+        <div className="flex h-dvh flex-col bg-muted">
+            <header className="border-b bg-background">
                 <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
                     <span className="text-2xl font-bold">Workout App</span>
                     <Button
@@ -28,7 +28,9 @@ export function AppLayout() {
             </header>
             <main className="flex-1">
                 <div className="mx-auto max-w-6xl px-4 py-6">
-                    <Outlet />
+                    <div className="rounded-lg bg-background p-6 shadow-md">
+                        <Outlet />
+                    </div>
                 </div>
             </main>
         </div>
