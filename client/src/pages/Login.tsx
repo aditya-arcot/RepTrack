@@ -1,4 +1,5 @@
 import { AuthService } from '@/api/generated'
+import { zLoginRequest } from '@/api/generated/zod.gen'
 import { useSession } from '@/auth/session'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,30 +12,35 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import type { LocationState } from '@/models/location'
-import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router'
+import { z } from 'zod'
+
+type LoginForm = z.infer<typeof zLoginRequest>
 
 export function Login() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
+    const { refresh } = useSession()
+    const navigate = useNavigate()
 
     const location = useLocation()
     const state = location.state as LocationState | null
     const from = state?.from?.pathname ?? '/login'
 
-    const { refresh } = useSession()
-    const navigate = useNavigate()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        resolver: zodResolver(zLoginRequest),
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
+    })
 
-    const handleLogin = async () => {
-        setLoading(true)
-        try {
-            await AuthService.login({ body: { username, password } })
-            await refresh()
-            void navigate(from, { replace: true })
-        } finally {
-            setLoading(false)
-        }
+    const onSubmit = async (data: LoginForm) => {
+        await AuthService.login({ body: data })
+        await refresh()
+        void navigate(from, { replace: true })
     }
 
     return (
@@ -44,41 +50,56 @@ export function Login() {
                     <CardTitle className="p-0 text-2xl">Login</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form className="space-y-4">
+                    <form
+                        id="login-form"
+                        className="space-y-4"
+                        onSubmit={(e) => {
+                            void handleSubmit(onSubmit)(e)
+                        }}
+                    >
                         <div className="space-y-1">
                             <Label htmlFor="username">Username</Label>
                             <Input
                                 id="username"
-                                value={username}
-                                onChange={(e) => {
-                                    setUsername(e.target.value)
-                                }}
-                                required
+                                aria-invalid={!!errors.username}
+                                className={
+                                    errors.username ? 'border-destructive' : ''
+                                }
+                                {...register('username')}
                             />
+                            {errors.username && (
+                                <p className="text-sm text-destructive">
+                                    {errors.username.message}
+                                </p>
+                            )}
                         </div>
-
                         <div className="space-y-1">
                             <Label htmlFor="password">Password</Label>
                             <Input
                                 id="password"
                                 type="password"
-                                value={password}
-                                onChange={(e) => {
-                                    setPassword(e.target.value)
-                                }}
-                                required
+                                aria-invalid={!!errors.password}
+                                className={
+                                    errors.password ? 'border-destructive' : ''
+                                }
+                                {...register('password')}
                             />
+                            {errors.password && (
+                                <p className="text-sm text-destructive">
+                                    {errors.password.message}
+                                </p>
+                            )}
                         </div>
                     </form>
                 </CardContent>
                 <CardFooter>
                     <Button
+                        form="login-form"
                         className="w-full"
-                        disabled={loading}
-                        type="button"
-                        onClick={() => void handleLogin()}
+                        disabled={isSubmitting}
+                        type="submit"
                     >
-                        {loading ? 'Logging in…' : 'Login'}
+                        {isSubmitting ? 'Logging in…' : 'Login'}
                     </Button>
                 </CardFooter>
             </Card>
