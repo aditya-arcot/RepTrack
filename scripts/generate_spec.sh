@@ -32,8 +32,3 @@ echo "Generating API client code"
 
 cd "$CLIENT_DIR"
 npm run generate-api > /dev/null 2>&1
-
-echo "Formatting generated code"
-
-cd ..
-npm run format > /dev/null 2>&1
