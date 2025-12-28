@@ -14,12 +14,6 @@ class Settings(BaseSettings):
     def IS_PROD(self) -> bool:
         return self.ENV == "stage" or self.ENV == "prod"
 
-    ADMIN_USERNAME: str
-    ADMIN_EMAIL: str
-    ADMIN_FIRST_NAME: str
-    ADMIN_LAST_NAME: str
-    ADMIN_PASSWORD: str
-
     POSTGRES_HOST: str
     POSTGRES_PORT: int
     POSTGRES_DB: str
@@ -34,6 +28,12 @@ class Settings(BaseSettings):
             f"{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:"
             f"{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         )
+
+    ADMIN_USERNAME: str
+    ADMIN_EMAIL: str
+    ADMIN_FIRST_NAME: str
+    ADMIN_LAST_NAME: str
+    ADMIN_PASSWORD: str
 
     EMAIL_BACKEND: Literal["smtp", "console", "disabled"]
     SMTP_HOST: str = "localhost"
