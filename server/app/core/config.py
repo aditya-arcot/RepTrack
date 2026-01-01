@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    ENV: Literal["dev", "test", "stage", "prod"]
+    ENV: Literal["dev", "stage", "prod"]
     LOG_LEVEL: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
     CLIENT_URL: str
 
@@ -49,17 +49,17 @@ class Settings(BaseSettings):
     ADMIN_PASSWORD: str
 
     EMAIL_BACKEND: Literal["smtp", "console", "disabled"]
-    SMTP_HOST: str = "localhost"
-    SMTP_PORT: int = 1025
-    SMTP_USERNAME: str | None = None
-    SMTP_PASSWORD: str | None = None
-    SMTP_USE_TLS: bool = False
-    SMTP_USE_SSL: bool = False
+    SMTP_HOST: str
+    SMTP_PORT: int
+    SMTP_USERNAME: str | None
+    SMTP_PASSWORD: str | None
+    SMTP_USE_TLS: bool
+    SMTP_USE_SSL: bool
     EMAIL_FROM: str
 
     JWT_SECRET_KEY: str
-    ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     model_config = SettingsConfigDict(
         env_file="../.env",
