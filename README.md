@@ -3,7 +3,7 @@
 Copy `.env.example` to `.env` & populate variables
 
 ```bash
-cp .env.example .env
+cp config/env/.env.example config/env/.env
 ```
 
 Install dependencies:

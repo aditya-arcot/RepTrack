@@ -57,7 +57,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     model_config = SettingsConfigDict(
-        env_file="../.env",
+        env_file="../config/env/.env",
         extra="ignore",
     )
 

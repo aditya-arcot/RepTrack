@@ -5,8 +5,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BASE_DIR="$SCRIPT_DIR/.."
 SERVER_DIR="$BASE_DIR/server"
 CLIENT_DIR="$BASE_DIR/client"
+CONFIG_DIR="$BASE_DIR/config"
 OLD_SPEC_FILE="$CLIENT_DIR/openapi_spec.json"
-NEW_SPEC_FILE="$BASE_DIR/openapi_spec.json"
+NEW_SPEC_FILE="$CONFIG_DIR/openapi_spec.json"
 
 cd "$SERVER_DIR"
 source .venv/bin/activate

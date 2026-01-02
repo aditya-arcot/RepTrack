@@ -62,7 +62,7 @@ services:
     server:
         pull_policy: build
         build:
-            context: ./server
+            context: ../../server
 
         restart: no
         ports:
@@ -99,7 +99,7 @@ services:
     client:
         pull_policy: build
         build:
-            context: ./client
+            context: ../../client
             target: dev
 
         restart: no
