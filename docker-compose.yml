@@ -114,10 +114,8 @@ services:
         healthcheck:
             test:
                 [
-                    'CMD',
-                    'python',
-                    '-c',
-                    "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')",
+                    'CMD-SHELL',
+                    'python -c "import urllib.request; urllib.request.urlopen(''https://api-${DOMAIN?}/api/health'')"',
                 ]
             start_period: 5s
             timeout: 5s
@@ -126,8 +124,9 @@ services:
 
         labels:
             - traefik.enable=true
-            - traefik.http.routers.${PROJECT?}-${ENV?}-server.rule=Host(`api.${DOMAIN?}`)
-            - traefik.http.routers.${PROJECT?}-${ENV?}-server.entrypoints=web
+            - traefik.prod=${PROD?}
+            - traefik.http.routers.${PROJECT?}-${ENV?}-server.rule=Host(`api-${DOMAIN?}`)
+            - traefik.http.routers.${PROJECT?}-${ENV?}-server.entrypoints=websecure
 
     client:
         image: ${DOCKER_REGISTRY?}/${PROJECT?}-${ENV?}-client:${TAG?}
@@ -138,12 +137,13 @@ services:
             - default
 
         environment:
-            - VITE_API_URL=http://api.${DOMAIN?}
+            - VITE_API_URL=http://api-${DOMAIN?}
 
         labels:
             - traefik.enable=true
+            - traefik.prod=${PROD?}
             - traefik.http.routers.${PROJECT?}-${ENV?}-client.rule=Host(`${DOMAIN?}`)
-            - traefik.http.routers.${PROJECT?}-${ENV?}-client.entrypoints=web
+            - traefik.http.routers.${PROJECT?}-${ENV?}-client.entrypoints=websecure
 
 volumes:
     pg-data:
