@@ -60,7 +60,8 @@ async def login_endpoint(
         key="access_token",
         value=token,
         httponly=True,
-        secure=True,
+        # must be False for pytest
+        secure=settings.ENV != "dev",
         samesite=settings.COOKIE_SAME_SITE,
         max_age=60 * 60,  # 1 hour
     )
