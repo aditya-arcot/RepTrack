@@ -9,6 +9,7 @@ cp .env.example .env
 Install dependencies:
 
 ```bash
+envsubst
 npm
 uv
 watchexec

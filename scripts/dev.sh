@@ -21,6 +21,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
+cd "$SCRIPT_DIR"
+./generate_pg_admin_config.sh
+
 cd "$BASE_DIR"
 docker compose up --watch &
 
