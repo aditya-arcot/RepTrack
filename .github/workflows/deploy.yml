@@ -31,7 +31,7 @@ permissions:
 
 jobs:
     deploy:
-        runs-on: self-hosted
+        runs-on: mbp-13
         environment: ${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
         steps:
             - name: create tag
