@@ -58,7 +58,7 @@ jobs:
                   echo "SMTP_PASSWORD=" >> .env
                   echo "SMTP_USE_TLS=false" >> .env
                   echo "SMTP_USE_SSL=false" >> .env
-                  echo "EMAIL_FROM=test@test.com" >> .env
+                  echo "EMAIL_FROM=" >> .env
 
                   echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
                   echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> .env
