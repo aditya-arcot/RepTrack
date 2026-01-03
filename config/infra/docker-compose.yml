@@ -135,7 +135,7 @@ services:
             test:
                 [
                     'CMD-SHELL',
-                    'python -c "import urllib.request; urllib.request.urlopen(''https://api-${DOMAIN?}/api/health'')"',
+                    'python -c "import urllib.request; urllib.request.urlopen(''http://localhost:8000/api/health'')"',
                 ]
             start_period: 5s
             timeout: 5s
