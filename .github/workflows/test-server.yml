@@ -25,7 +25,6 @@ jobs:
               with:
                   working-directory: server
                   enable-cache: true
-                  cache-python: true
 
             - name: install
               working-directory: server

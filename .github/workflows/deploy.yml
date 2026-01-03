@@ -72,7 +72,6 @@ jobs:
               with:
                   working-directory: server
                   enable-cache: true
-                  cache-python: true
 
             - name: server - install deps
               working-directory: server
@@ -90,6 +89,8 @@ jobs:
 
                   echo "PGADMIN_EMAIL=${{ secrets.PGADMIN_EMAIL }}" >> .env
                   echo "PGADMIN_PASSWORD=${{ secrets.PGADMIN_PASSWORD }}" >> .env
+
+                  echo "TRAEFIK_NETWORK=${{ github.ref_name == 'main' && 'traefik-public' || 'traefik-stage-public' }}" >> .env
 
                   echo "ENV=${{ vars.ENV }}" >> .env
                   echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env

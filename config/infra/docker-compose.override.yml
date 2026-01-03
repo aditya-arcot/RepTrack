@@ -131,4 +131,3 @@ services:
 networks:
     traefik-public:
         external: false
-        name: traefik-public
