@@ -35,8 +35,8 @@ services:
             - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD?}
             - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
         volumes:
-            - ./servers.json:/pgadmin4/servers.json:ro
-            - ./pgpass:/pgpass:ro
+            - ../env/servers.json:/pgadmin4/servers.json:ro
+            - ../env/pgpass:/pgpass:ro
 
         labels:
             - traefik.enable=true
