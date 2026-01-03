@@ -94,7 +94,7 @@ jobs:
 
                   echo "ENV=${{ vars.ENV }}" >> .env
                   echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env
-                  echo "CLIENT_URL=https://${{ secrets.DOMAIN }}" >> .env
+                  echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> .env
 
                   echo "POSTGRES_HOST=" >> .env
                   echo "POSTGRES_PORT=" >> .env
