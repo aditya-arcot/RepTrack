@@ -34,9 +34,19 @@ services:
             - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL?}
             - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD?}
             - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+            - PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT=False
+            - PGADMIN_CONFIG_WTF_CSRF_ENABLED=False
         volumes:
             - ../env/servers.json:/pgadmin4/servers.json:ro
             - ../env/pgpass:/pgpass:ro
+
+        entrypoint: |
+            /bin/sh -c "
+                USER_DIR=$(printf "%s" "$PGADMIN_EMAIL" | tr "@" "_");
+                mkdir -p /var/lib/pgadmin/storage/$$USER_DIR;
+                cp -f /pgpass /var/lib/pgadmin/storage/$$USER_DIR;
+                /entrypoint.sh
+            "
 
         labels:
             - traefik.enable=true

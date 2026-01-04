@@ -8,7 +8,6 @@ ENV_FILE="$ENV_DIR/.env"
 SERVERS_FILE="$ENV_DIR/servers.json"
 PGPASS_FILE="$ENV_DIR/pgpass"
 
-cd "$BASE_DIR"
 export $(grep -v '^#' "$ENV_FILE" | xargs)
 envsubst < "$SERVERS_FILE".template > "$SERVERS_FILE"
 envsubst < "$PGPASS_FILE".template > "$PGPASS_FILE"
