@@ -25,8 +25,11 @@ title = "RepTrack"
 if settings.ENV != "prod":
     title += f" ({settings.ENV})"
 
-# TODO disable swagger & redoc in prod
-app = FastAPI(title=title, lifespan=lifespan)
+if settings.IS_PROD:
+    app = FastAPI(title=title, lifespan=lifespan, docs_url=None, redoc_url=None)
+else:
+    app = FastAPI(title=title, lifespan=lifespan)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_URLS,
