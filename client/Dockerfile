@@ -7,6 +7,7 @@ WORKDIR /src
 COPY package*.json ./
 RUN npm ci
 
+COPY public/ ./public/
 COPY src/ ./src/
 COPY index.html tsconfig*.json vite.config.ts ./
 

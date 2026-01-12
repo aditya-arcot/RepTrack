@@ -75,6 +75,9 @@ services:
 
         develop:
             watch:
+                - path: ../../client/public
+                  action: sync
+                  target: /src/public
                 - path: ../../client/src
                   action: sync
                   target: /src/src
