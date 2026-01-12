@@ -2,9 +2,12 @@ import { configureApiClient } from '@/api/axios'
 import { App } from '@/App'
 import { AppRoutes } from '@/AppRoutes'
 import { SessionProvider } from '@/auth/SessionProvider'
+import { env } from '@/config/env'
 import '@/index.css'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
+
+if (env.ENV !== 'prod') document.title = `RepTrack (${env.ENV})`
 
 configureApiClient()
 

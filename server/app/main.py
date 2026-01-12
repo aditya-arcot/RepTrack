@@ -21,7 +21,15 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+title = "RepTrack"
+if settings.ENV != "prod":
+    title += f" ({settings.ENV})"
+
+if settings.IS_PROD:
+    app = FastAPI(title=title, lifespan=lifespan, docs_url=None, redoc_url=None)
+else:
+    app = FastAPI(title=title, lifespan=lifespan)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_URLS,

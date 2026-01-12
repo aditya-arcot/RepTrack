@@ -4,6 +4,19 @@ set -Eeuo pipefail
 echo "Running pre-commit hook..."
 echo
 
+echo "Forcing API client generation..."
+./scripts/generate_api.sh -f
+
+if ! git diff --quiet -- "client/src/api/generated"; then
+    echo "API client code is outdated"
+    echo "Run generation script & stage updated files"
+    echo "Use force flag (-f) if needed"
+    exit 1
+fi
+
+echo "API client code is up to date"
+echo
+
 echo "Formatting and linting staged files..."
 lint-staged
 echo

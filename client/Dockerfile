@@ -4,9 +4,10 @@ FROM node:24 AS base
 WORKDIR /src
 
 # optimize layer caching
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm ci
 
+COPY public/ ./public/
 COPY src/ ./src/
 COPY index.html tsconfig*.json vite.config.ts ./
 
@@ -23,14 +24,18 @@ CMD ["npm", "run", "dev", "--", "--host"]
 ### build
 FROM base AS build
 
-# set through env or build args
-ARG VITE_API_URL=${VITE_API_URL}
-RUN sh -c 'if [ -z "$VITE_API_URL" ]; then exit 1; fi'
+ARG VITE_ENV
+ARG VITE_IMAGE_TAG
+ARG VITE_API_URL
+
+ENV VITE_ENV=${VITE_ENV}
+ENV VITE_IMAGE_TAG=${VITE_IMAGE_TAG}
+ENV VITE_API_URL=${VITE_API_URL}
 
 RUN npm run build
 
 
-# prod
+### prod
 FROM nginx:alpine AS prod
 
 COPY --from=build /src/dist /usr/share/nginx/html
