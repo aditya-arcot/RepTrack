@@ -21,7 +21,12 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+title = "RepTrack"
+if settings.ENV != "prod":
+    title += f" ({settings.ENV})"
+
+# TODO disable swagger & redoc in prod
+app = FastAPI(title=title, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_URLS,
