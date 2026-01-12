@@ -14,7 +14,7 @@ source .venv/bin/activate
 
 tmpfile="$(mktemp)"
 
-python3 << EOF > /dev/null 2>&1
+python3 << EOF
 import json
 import app.main
 
@@ -27,6 +27,7 @@ mv "$tmpfile" "$NEW_SPEC_FILE"
 
 if [ -f "$OLD_SPEC_FILE" ]; then
     if cmp -s "$NEW_SPEC_FILE" "$OLD_SPEC_FILE"; then
+        echo "Skipping API generation"
         exit 0
     fi
 fi
@@ -34,4 +35,5 @@ fi
 mv "$NEW_SPEC_FILE" "$OLD_SPEC_FILE"
 
 cd "$CLIENT_DIR"
+echo "Generating API client"
 npm run generate-api > /dev/null
