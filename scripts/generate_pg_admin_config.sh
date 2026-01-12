@@ -8,7 +8,10 @@ ENV_FILE="$ENV_DIR/.env"
 SERVERS_FILE="$ENV_DIR/servers.json"
 PGPASS_FILE="$ENV_DIR/pgpass"
 
-export $(grep -v '^#' "$ENV_FILE" | xargs)
+set -a
+source "$ENV_FILE"
+set +a
+
 envsubst < "$SERVERS_FILE".template > "$SERVERS_FILE"
 envsubst < "$PGPASS_FILE".template > "$PGPASS_FILE"
 chmod 600 "$PGPASS_FILE"
