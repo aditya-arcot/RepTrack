@@ -1,6 +1,14 @@
 #!/bin/bash
 set -Eeuo pipefail
 
+FORCE=false
+
+while getopts "f" opt; do
+    case "$opt" in
+    f) FORCE=true ;;
+    esac
+done
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BASE_DIR="$SCRIPT_DIR/.."
 SERVER_DIR="$BASE_DIR/server"
@@ -25,7 +33,7 @@ EOF
 
 mv "$tmpfile" "$NEW_SPEC_FILE"
 
-if [ -f "$OLD_SPEC_FILE" ]; then
+if [ "$FORCE" = false ] && [ -f "$OLD_SPEC_FILE" ]; then
     if cmp -s "$NEW_SPEC_FILE" "$OLD_SPEC_FILE"; then
         echo "Skipping API generation"
         exit 0
