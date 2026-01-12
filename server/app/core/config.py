@@ -31,6 +31,12 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
+    def COOKIE_SECURE(self) -> bool:
+        # must be False for pytest in test env
+        return self.ENV != "test"
+
+    @computed_field
+    @property
     def COOKIE_SAME_SITE(self) -> Literal["lax", "none"]:
         return "lax" if self.IS_PROD else "none"
 

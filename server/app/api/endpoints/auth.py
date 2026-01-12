@@ -60,8 +60,7 @@ async def login_endpoint(
         key="access_token",
         value=token,
         httponly=True,
-        # must be False for pytest in test env
-        secure=settings.ENV != "test",
+        secure=settings.COOKIE_SECURE,
         samesite=settings.COOKIE_SAME_SITE,
         max_age=60 * 60,  # 1 hour
     )
@@ -76,5 +75,6 @@ async def logout_endpoint(response: Response):
     response.delete_cookie(
         key="access_token",
         httponly=True,
+        secure=settings.COOKIE_SECURE,
         samesite=settings.COOKIE_SAME_SITE,
     )
