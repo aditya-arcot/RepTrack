@@ -6,6 +6,7 @@ FORCE=false
 while getopts "f" opt; do
     case "$opt" in
     f) FORCE=true ;;
+    \?) exit 1 ;;
     esac
 done
 
