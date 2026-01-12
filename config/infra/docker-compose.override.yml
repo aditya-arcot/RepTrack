@@ -70,6 +70,7 @@ services:
 
         environment:
             - VITE_ENV=dev
+            - VITE_IMAGE_TAG=local
             - VITE_API_URL=http://localhost:8000
 
         develop:

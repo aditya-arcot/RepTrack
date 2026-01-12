@@ -24,9 +24,11 @@ CMD ["npm", "run", "dev", "--", "--host"]
 FROM base AS build
 
 ARG VITE_ENV
+ARG VITE_IMAGE_TAG
 ARG VITE_API_URL
 
 ENV VITE_ENV=${VITE_ENV}
+ENV VITE_IMAGE_TAG=${VITE_IMAGE_TAG}
 ENV VITE_API_URL=${VITE_API_URL}
 
 RUN npm run build

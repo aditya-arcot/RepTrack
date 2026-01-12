@@ -57,7 +57,8 @@ jobs:
               run: |
                   IMAGE=${{secrets.DOCKER_REGISTRY}}/${{ vars.PROJECT }}-${{ vars.ENV}}-client:${{ env.TAG }}
                   docker build \
-                    --build-arg VITE_ENV=${{ vars.ENV }}
+                    --build-arg VITE_ENV=${{ vars.ENV }} \
+                    --build-arg VITE_IMAGE_TAG=${{ env.TAG }} \
                     --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} \
                     -t $IMAGE .
                   docker push $IMAGE
