@@ -9,8 +9,7 @@ echo "Forcing API client generation..."
 
 if ! git diff --quiet -- "client/src/api/generated"; then
     echo "API client code is outdated"
-    echo "Run generation script & stage updated files"
-    echo "Use force flag (-f) if needed"
+    echo "Stage updated files"
     exit 1
 fi
 
