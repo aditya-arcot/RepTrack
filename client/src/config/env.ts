@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger'
 import { EnvSchema } from '@/models/env'
 
 const createEnv = () => {
@@ -13,6 +14,7 @@ const createEnv = () => {
     )
     const parsedEnv = EnvSchema.safeParse(env)
     if (!parsedEnv.success) throw Error('Failed to parse env vars')
+    logger.info('Loaded env vars:', parsedEnv.data)
     return parsedEnv.data
 }
 

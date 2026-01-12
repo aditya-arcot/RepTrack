@@ -69,6 +69,7 @@ services:
             - '5173:5173'
 
         environment:
+            - VITE_ENV=dev
             - VITE_API_URL=http://localhost:8000
 
         develop:
