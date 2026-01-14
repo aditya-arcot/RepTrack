@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 
-export function LoadingComponent() {
+export function Loading() {
     return (
         <div className="flex min-h-screen items-center justify-center">
             <Button disabled size="lg">
