@@ -168,6 +168,10 @@ services:
             - traefik-public
             - default
 
+        depends_on:
+            server:
+                condition: service_healthy
+
         labels:
             - traefik.enable=true
             - traefik.prod=${PROD?}
