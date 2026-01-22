@@ -31,6 +31,9 @@ services:
         ports:
             - '8000:8000'
 
+        volumes:
+            - ../../server/data:/src/data
+
         develop:
             watch:
                 - path: ../../server/app

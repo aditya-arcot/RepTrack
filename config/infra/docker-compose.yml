@@ -6,13 +6,13 @@ services:
         container_name: ${PROJECT?}-${ENV?}-database
         restart: always
 
+        volumes:
+            - pg-data:/var/lib/postgresql/data/pgdata
         environment:
             - PGDATA=/var/lib/postgresql/data/pgdata
             - POSTGRES_DB=${POSTGRES_DB?}
             - POSTGRES_USER=${POSTGRES_USER?}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?}
-        volumes:
-            - pg-data:/var/lib/postgresql/data/pgdata
 
         healthcheck:
             # pg_isready does not check user or db
@@ -30,15 +30,15 @@ services:
             - traefik-public
             - default
 
+        volumes:
+            - ../env/servers.json:/pgadmin4/servers.json:ro
+            - ../env/pgpass:/pgpass:ro
         environment:
             - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL?}
             - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD?}
             - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
             - PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT=False
             - PGADMIN_CONFIG_WTF_CSRF_ENABLED=False
-        volumes:
-            - ../env/servers.json:/pgadmin4/servers.json:ro
-            - ../env/pgpass:/pgpass:ro
 
         entrypoint: |
             /bin/sh -c "
@@ -112,6 +112,8 @@ services:
             migrations:
                 condition: service_completed_successfully
 
+        volumes:
+            - server-data:/src/data
         environment:
             - ENV=${ENV?}
             - LOG_LEVEL=${LOG_LEVEL?}
@@ -180,6 +182,7 @@ services:
 
 volumes:
     pg-data:
+    server-data:
 
 networks:
     traefik-public:

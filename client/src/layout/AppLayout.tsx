@@ -1,5 +1,6 @@
 import { AuthService } from '@/api/generated'
 import { useSession } from '@/auth/session'
+import { Feedback } from '@/components/Feedback'
 import { Button } from '@/components/ui/button'
 import { NavItem } from '@/lib/nav'
 import { NavLink, Outlet, useNavigate } from 'react-router'
@@ -27,12 +28,15 @@ export function AppLayout() {
                             <NavItem to="/docs">Docs</NavItem>
                         </nav>
                     </div>
-                    <Button
-                        variant="destructive"
-                        onClick={() => void handleLogout()}
-                    >
-                        Logout
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Feedback />
+                        <Button
+                            variant="destructive"
+                            onClick={() => void handleLogout()}
+                        >
+                            Logout
+                        </Button>
+                    </div>
                 </div>
             </header>
             <main className="flex-1">
