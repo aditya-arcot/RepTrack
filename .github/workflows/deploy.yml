@@ -8,8 +8,10 @@ on:
             - main
         paths:
             - .github/workflows/deploy*.yml
+            - client/public/**
             - client/src/**
             - client/Dockerfile
+            - client/index.html
             - client/nginx.conf
             - client/package*.json
             - client/tsconfig*.json
