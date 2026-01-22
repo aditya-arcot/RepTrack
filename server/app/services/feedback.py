@@ -24,13 +24,17 @@ async def create_feedback(
     payload: CreateFeedbackRequest,
     db: AsyncSession,
 ):
-    logger.info(f"Received feedback from user: {user.username}")
+    logger.info(
+        f"Received feedback from user {user.username} with title: {payload.title}"
+    )
 
     stored_files = await store_files(payload.files, FEEDBACK_DIR)
     feedback = Feedback(
         user_id=user.id,
         type=payload.type,
-        text=payload.text,
+        url=payload.url,
+        title=payload.title,
+        description=payload.description,
         files=stored_files,
     )
 
@@ -38,4 +42,4 @@ async def create_feedback(
     await db.commit()
     await db.refresh(feedback)
 
-    logger.info(f"Stored feedback from user: {user.username} with id: {feedback.id}")
+    logger.info(f"Stored feedback from user {user.username} with id: {feedback.id}")
