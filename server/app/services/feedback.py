@@ -12,6 +12,7 @@ from app.core.config import settings
 from app.models.database.feedback import Feedback
 from app.models.schemas.feedback import CreateFeedbackRequest
 from app.models.schemas.user import UserPublic
+from app.services.github import create_feedback_issue
 from app.services.storage import store_files
 
 logger = logging.getLogger(__name__)
@@ -41,5 +42,7 @@ async def create_feedback(
     db.add(feedback)
     await db.commit()
     await db.refresh(feedback)
+
+    await create_feedback_issue(feedback)
 
     logger.info(f"Stored feedback from user {user.username} with id: {feedback.id}")

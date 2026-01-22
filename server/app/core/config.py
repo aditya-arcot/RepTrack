@@ -11,12 +11,46 @@ class Settings(BaseSettings):
     LOG_LEVEL: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
     CLIENT_URL: str
 
+    GITHUB_TOKEN: str
+    REPO_OWNER: str
+
+    POSTGRES_HOST: str
+    POSTGRES_PORT: int
+    POSTGRES_DB: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+
+    ADMIN_USERNAME: str
+    ADMIN_EMAIL: str
+    ADMIN_FIRST_NAME: str
+    ADMIN_LAST_NAME: str
+    ADMIN_PASSWORD: str
+
+    EMAIL_BACKEND: Literal["smtp", "console", "disabled"]
+    SMTP_HOST: str
+    SMTP_PORT: int
+    SMTP_USERNAME: str | None
+    SMTP_PASSWORD: str | None
+    SMTP_USE_TLS: bool
+    # allow arbitrary string
+    EMAIL_FROM: str
+
+    JWT_SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    REFRESH_TOKEN_EXPIRE_DAYS: int
+
+    @computed_field
+    @property
+    def REPO_NAME(self) -> str:
+        return "RepTrack"
+
     @computed_field
     @property
     def PROJECT_NAME(self) -> str:
         if self.ENV == "prod":
-            return "RepTrack"
-        return f"RepTrack-{self.ENV.capitalize()}"
+            return self.REPO_NAME
+        return f"{self.REPO_NAME}-{self.ENV.capitalize()}"
 
     @computed_field
     @property
@@ -62,12 +96,6 @@ class Settings(BaseSettings):
         path.mkdir(parents=True, exist_ok=True)
         return path
 
-    POSTGRES_HOST: str
-    POSTGRES_PORT: int
-    POSTGRES_DB: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-
     @computed_field
     @property
     def DATABASE_URL(self) -> str:
@@ -76,26 +104,6 @@ class Settings(BaseSettings):
             f"{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:"
             f"{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         )
-
-    ADMIN_USERNAME: str
-    ADMIN_EMAIL: str
-    ADMIN_FIRST_NAME: str
-    ADMIN_LAST_NAME: str
-    ADMIN_PASSWORD: str
-
-    EMAIL_BACKEND: Literal["smtp", "console", "disabled"]
-    SMTP_HOST: str
-    SMTP_PORT: int
-    SMTP_USERNAME: str | None
-    SMTP_PASSWORD: str | None
-    SMTP_USE_TLS: bool
-    # allow arbitrary string
-    EMAIL_FROM: str
-
-    JWT_SECRET_KEY: str
-    ALGORITHM: str
-    ACCESS_TOKEN_EXPIRE_MINUTES: int
-    REFRESH_TOKEN_EXPIRE_DAYS: int
 
     model_config = SettingsConfigDict(
         env_file="../config/env/.env",

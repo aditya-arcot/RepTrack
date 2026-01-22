@@ -89,6 +89,9 @@ jobs:
                   echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env
                   echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> .env
 
+                  echo "REPO_OWNER=${{ secrets.REPO_OWNER }}" >> .env
+                  echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
+
                   echo "POSTGRES_HOST=" >> .env
                   echo "POSTGRES_PORT=" >> .env
                   echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
