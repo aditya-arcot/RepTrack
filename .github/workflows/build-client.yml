@@ -14,25 +14,20 @@ jobs:
     build-client:
         runs-on: self-hosted
         steps:
+            - name: unlock keychain
+              run: security unlock-keychain -p ${{ secrets.KEYCHAIN_PASSWORD }} login.keychain
+
             - name: checkout
               uses: actions/checkout@v6
               with:
                   ref: ${{ github.event.pull_request.head.sha || github.ref_name }}
 
-            - name: setup node
-              uses: actions/setup-node@v6
-              with:
-                  node-version: 'lts/*'
-                  check-latest: true
-
-            - name: install, build
+            - name: build using docker
               working-directory: client
               run: |
-                  npm config ls
-                  npm ci --cache .npm
-                  npm run build
-
-            - name: remove cache folder
-              if: always()
-              working-directory: client
-              run: rm -rf .npm
+                  docker build \
+                      --target build \
+                      --build-arg VITE_ENV=ci \
+                      --build-arg VITE_IMAGE_TAG=ci-tag \
+                      --build-arg VITE_API_URL=https://api.example.com \
+                      .

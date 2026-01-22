@@ -1,5 +1,5 @@
 ### base
-FROM node:24 AS base
+FROM node:lts-alpine AS base
 
 WORKDIR /src
 
@@ -17,7 +17,7 @@ FROM base AS dev
 
 EXPOSE 5173
 
-# binds all interfaces
+# binds to all interfaces
 CMD ["npm", "run", "dev", "--", "--host"]
 
 
@@ -40,5 +40,7 @@ FROM nginx:alpine AS prod
 
 COPY --from=build /src/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 5173
 
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,7 +1,12 @@
 .PHONY: dev test check_migrations manual_migration auto_migration run_migrations
 
 dev:
-	uv run fastapi dev app/main.py
+	uv run uvicorn app.main:app \
+		--host 0.0.0.0 \
+		--reload \
+		--reload-dir 'app' \
+		--reload-dir '../config/env' \
+		--reload-include '.env'
 
 test:
 	uv run pytest -v

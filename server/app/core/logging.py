@@ -1,29 +1,28 @@
 import logging
 import logging.config
-from pathlib import Path
+from typing import Any
 
 from pythonjsonlogger.json import JsonFormatter
 
 from app.core.config import settings
 
-LOG_DIR = Path.home() / "Projects" / "Logs"
-LOG_FILE = LOG_DIR / f"reptrack_server_{settings.ENV}.log"
-
 
 def setup_logging() -> None:
-    handlers = {
+    handlers: dict[str, dict[str, Any]] = {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "json",
         },
     }
 
-    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    log_file = settings.LOG_DIR / f"reptrack_server_{settings.ENV}.log"
     handlers["file"] = {
-        "class": "logging.FileHandler",
+        "class": "logging.handlers.RotatingFileHandler",
         "formatter": "json",
-        "filename": str(LOG_FILE),
+        "filename": str(log_file),
         "encoding": "utf-8",
+        "maxBytes": 1024 * 1024,  # 1 MiB
+        "backupCount": 5,
     }
 
     logging.config.dictConfig(

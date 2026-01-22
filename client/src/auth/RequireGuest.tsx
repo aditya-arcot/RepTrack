@@ -1,11 +1,11 @@
 import { useSession } from '@/auth/session'
-import { LoadingComponent } from '@/components/LoadingComponent'
+import { Loading } from '@/components/Loading'
 import type { JSX } from 'react'
 import { Navigate } from 'react-router'
 
 export function RequireGuest({ children }: { children: JSX.Element }) {
     const { loading, authenticated } = useSession()
-    if (loading) return <LoadingComponent />
+    if (loading) return <Loading />
     if (authenticated) return <Navigate to="/" replace />
     return children
 }

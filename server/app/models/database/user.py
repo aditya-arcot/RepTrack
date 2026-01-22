@@ -10,6 +10,7 @@ from app.core.database import Base
 if TYPE_CHECKING:
     from .access_request import AccessRequest
     from .exercise import Exercise
+    from .feedback import Feedback
     from .workout import Workout
 
 
@@ -64,6 +65,10 @@ class User(Base):
         back_populates="reviewer"
     )
     exercises: Mapped[List[Exercise]] = relationship(
+        back_populates="user",
+        passive_deletes=True,
+    )
+    feedbacks: Mapped[List["Feedback"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
     )

@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 from typing import Literal
 
 from pydantic import computed_field
@@ -40,6 +42,26 @@ class Settings(BaseSettings):
     def COOKIE_SAME_SITE(self) -> Literal["lax", "none"]:
         return "lax" if self.IS_PROD else "none"
 
+    @computed_field
+    @property
+    def DATA_DIR(self) -> Path:
+        path = Path("data")
+        if not path.is_absolute():
+            path = Path(os.getcwd()) / path
+        path = path.resolve()
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
+    @computed_field
+    @property
+    def LOG_DIR(self) -> Path:
+        path = Path("logs")
+        if not path.is_absolute():
+            path = Path(os.getcwd()) / path
+        path = path.resolve()
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
     POSTGRES_HOST: str
     POSTGRES_PORT: int
     POSTGRES_DB: str
@@ -73,6 +95,7 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
+    REFRESH_TOKEN_EXPIRE_DAYS: int
 
     model_config = SettingsConfigDict(
         env_file="../config/env/.env",

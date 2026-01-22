@@ -1,0 +1,23 @@
+from enum import Enum
+from typing import Annotated, Self
+
+from fastapi import File, UploadFile
+from pydantic import BaseModel, Field, model_validator
+
+
+class FeedbackType(str, Enum):
+    feedback = "feedback"
+    feature = "feature"
+
+
+class CreateFeedbackRequest(BaseModel):
+    type: FeedbackType
+    text: str = Field(min_length=1, max_length=10000)
+    files: list[Annotated[UploadFile, File()]] = []
+
+    @model_validator(mode="after")
+    def check_files(self) -> Self:
+        for file in self.files:
+            if (file.size or 0) > 5 * 1024 * 1024:  # 5 MiB
+                raise ValueError(f"File too large: {file.filename}")
+        return self

@@ -5,6 +5,26 @@ export type ClientOptions = {
 };
 
 /**
+ * CreateFeedbackRequest
+ */
+export type CreateFeedbackRequest = {
+    type: FeedbackType;
+    /**
+     * Text
+     */
+    text: string;
+    /**
+     * Files
+     */
+    files?: Array<Blob | File>;
+};
+
+/**
+ * FeedbackType
+ */
+export type FeedbackType = 'feedback' | 'feature';
+
+/**
  * HTTPValidationError
  */
 export type HttpValidationError = {
@@ -172,6 +192,22 @@ export type LoginResponses = {
 
 export type LoginResponse = LoginResponses[keyof LoginResponses];
 
+export type RefreshTokenData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/auth/refresh-token';
+};
+
+export type RefreshTokenResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type RefreshTokenResponse = RefreshTokenResponses[keyof RefreshTokenResponses];
+
 export type LogoutData = {
     body?: never;
     path?: never;
@@ -187,6 +223,29 @@ export type LogoutResponses = {
 };
 
 export type LogoutResponse = LogoutResponses[keyof LogoutResponses];
+
+export type CreateFeedbackData = {
+    body: CreateFeedbackRequest;
+    path?: never;
+    query?: never;
+    url: '/api/feedback';
+};
+
+export type CreateFeedbackErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CreateFeedbackError = CreateFeedbackErrors[keyof CreateFeedbackErrors];
+
+export type CreateFeedbackResponses = {
+    /**
+     * Successful Response
+     */
+    202: unknown;
+};
 
 export type GetHealthData = {
     body?: never;

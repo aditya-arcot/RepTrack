@@ -1,7 +1,9 @@
 import { AuthService } from '@/api/generated'
 import { useSession } from '@/auth/session'
+import { Feedback } from '@/components/Feedback'
 import { Button } from '@/components/ui/button'
-import { Outlet, useNavigate } from 'react-router'
+import { NavItem } from '@/lib/nav'
+import { NavLink, Outlet, useNavigate } from 'react-router'
 
 export function AppLayout() {
     const { refresh } = useSession()
@@ -17,13 +19,24 @@ export function AppLayout() {
         <div className="flex h-dvh flex-col bg-muted">
             <header className="border-b bg-background">
                 <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-                    <span className="text-2xl font-bold">RepTrack</span>
-                    <Button
-                        variant="destructive"
-                        onClick={() => void handleLogout()}
-                    >
-                        Logout
-                    </Button>
+                    <div className="flex items-baseline gap-4">
+                        <NavLink to="/" className="text-2xl font-bold">
+                            RepTrack
+                        </NavLink>
+                        <nav className="flex items-center gap-4">
+                            <NavItem to="/">Dashboard</NavItem>
+                            <NavItem to="/docs">Docs</NavItem>
+                        </nav>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Feedback />
+                        <Button
+                            variant="destructive"
+                            onClick={() => void handleLogout()}
+                        >
+                            Logout
+                        </Button>
+                    </div>
                 </div>
             </header>
             <main className="flex-1">

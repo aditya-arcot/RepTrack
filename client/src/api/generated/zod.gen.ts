@@ -3,6 +3,20 @@
 import { z } from 'zod';
 
 /**
+ * FeedbackType
+ */
+export const zFeedbackType = z.enum(['feedback', 'feature']);
+
+/**
+ * CreateFeedbackRequest
+ */
+export const zCreateFeedbackRequest = z.object({
+    type: zFeedbackType,
+    text: z.string().min(1).max(10000),
+    files: z.optional(z.array(z.string())).default([])
+});
+
+/**
  * LoginRequest
  */
 export const zLoginRequest = z.object({
@@ -83,6 +97,17 @@ export const zLoginData = z.object({
  */
 export const zLoginResponse = z.void();
 
+export const zRefreshTokenData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+/**
+ * Successful Response
+ */
+export const zRefreshTokenResponse = z.void();
+
 export const zLogoutData = z.object({
     body: z.optional(z.never()),
     path: z.optional(z.never()),
@@ -93,6 +118,12 @@ export const zLogoutData = z.object({
  * Successful Response
  */
 export const zLogoutResponse = z.void();
+
+export const zCreateFeedbackData = z.object({
+    body: zCreateFeedbackRequest,
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
 
 export const zGetHealthData = z.object({
     body: z.optional(z.never()),
