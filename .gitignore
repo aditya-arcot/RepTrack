@@ -8,11 +8,3 @@ pgpass
 servers.json
 
 todo
-
-# Python build artifacts
-*.egg-info/
-__pycache__/
-*.pyc
-*.pyo
-dist/
-build/
