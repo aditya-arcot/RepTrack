@@ -1,0 +1,89 @@
+version: 2
+
+updates:
+    - package-ecosystem: 'npm'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      ignore:
+          - dependency-name: '*'
+            update-types: ['version-update:semver-major']
+      groups:
+          root-dependencies:
+              patterns:
+                  - '*'
+      target-branch: 'stage'
+      assignees:
+          - 'aditya-arcot'
+
+    - package-ecosystem: 'npm'
+      directory: 'client'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      ignore:
+          - dependency-name: '*'
+            update-types: ['version-update:semver-major']
+      groups:
+          client-dependencies:
+              patterns:
+                  - '*'
+      target-branch: 'stage'
+      assignees:
+          - 'aditya-arcot'
+
+    - package-ecosystem: 'uv'
+      directory: 'server'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      ignore:
+          - dependency-name: '*'
+            update-types: ['version-update:semver-major']
+      groups:
+          server-dependencies:
+              patterns:
+                  - '*'
+      target-branch: 'stage'
+      assignees:
+          - 'aditya-arcot'
+
+    - package-ecosystem: 'docker'
+      directory: 'client'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      groups:
+          client-docker:
+              patterns:
+                  - '*'
+      target-branch: 'stage'
+      assignees:
+          - 'aditya-arcot'
+
+    - package-ecosystem: 'docker'
+      directory: 'server'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      groups:
+          server-docker:
+              patterns:
+                  - '*'
+      target-branch: 'stage'
+      assignees:
+          - 'aditya-arcot'
+
+    - package-ecosystem: 'github-actions'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      groups:
+          github-actions:
+              patterns:
+                  - '*'
+      target-branch: 'stage'
+      assignees:
+          - 'aditya-arcot'
