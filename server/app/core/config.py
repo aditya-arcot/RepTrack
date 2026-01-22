@@ -52,6 +52,16 @@ class Settings(BaseSettings):
         path.mkdir(parents=True, exist_ok=True)
         return path
 
+    @computed_field
+    @property
+    def LOG_DIR(self) -> Path:
+        path = Path("logs")
+        if not path.is_absolute():
+            path = Path(os.getcwd()) / path
+        path = path.resolve()
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
     POSTGRES_HOST: str
     POSTGRES_PORT: int
     POSTGRES_DB: str

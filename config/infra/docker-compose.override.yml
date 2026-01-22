@@ -33,6 +33,7 @@ services:
 
         volumes:
             - ../../server/data:/src/data
+            - ../../server/logs:/src/logs
 
         develop:
             watch:

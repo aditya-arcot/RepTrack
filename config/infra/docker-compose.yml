@@ -114,6 +114,7 @@ services:
 
         volumes:
             - server-data:/src/data
+            - server-logs:/src/logs
         environment:
             - ENV=${ENV?}
             - LOG_LEVEL=${LOG_LEVEL?}
@@ -183,6 +184,7 @@ services:
 volumes:
     pg-data:
     server-data:
+    server-logs:
 
 networks:
     traefik-public:
