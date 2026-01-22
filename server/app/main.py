@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 
 
 def create_directories():
-    """Create necessary directories for data and logs."""
     settings.DATA_DIR.mkdir(parents=True, exist_ok=True)
     settings.LOG_DIR.mkdir(parents=True, exist_ok=True)
 
