@@ -36,12 +36,14 @@ export function Feedback() {
         handleSubmit,
         setValue,
         watch,
-        formState: { errors, isSubmitting, isDirty },
+        formState: { errors, isDirty, isSubmitting },
         reset,
     } = useForm<FeedbackForm>({
         resolver: zodResolver(feedbackFormSchema),
         defaultValues: {
             type: 'feedback',
+            title: '',
+            description: '',
         },
         mode: 'onSubmit',
         reValidateMode: 'onChange',
