@@ -23,7 +23,7 @@ jobs:
             - name: fetch & rebase
               run: |
                   git fetch
-                  git rebase
+                  git rebase origin/${{ github.event.pull_request.base.ref }}
 
             - name: setup node
               uses: actions/setup-node@v6
