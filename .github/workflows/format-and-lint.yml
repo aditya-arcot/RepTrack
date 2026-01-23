@@ -19,11 +19,7 @@ jobs:
               uses: actions/checkout@v6
               with:
                   ref: ${{ github.event.pull_request.head.sha || github.ref_name }}
-
-            - name: fetch & rebase
-              run: |
-                  git fetch
-                  git rebase origin/${{ github.event.pull_request.base.ref }}
+                  fetch-depth: 0
 
             - name: setup node
               uses: actions/setup-node@v6
