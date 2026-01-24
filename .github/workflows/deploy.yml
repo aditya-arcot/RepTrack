@@ -91,7 +91,7 @@ jobs:
                   echo "LOG_LEVEL=${{ vars.LOG_LEVEL }}" >> .env
                   echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> .env
 
-                  echo "GH_BACKEND=${{ secrets.GH_BACKEND }}" >> .env
+                  echo "GH_BACKEND=${{ vars.GH_BACKEND }}" >> .env
                   echo "REPO_OWNER=${{ secrets.REPO_OWNER }}" >> .env
                   echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
 
