@@ -16,19 +16,19 @@ GITHUB_API_URL_REPO = (
 )
 
 HEADERS = {
-    "Authorization": f"Bearer {settings.GITHUB_TOKEN}",
+    "Authorization": f"Bearer {settings.GH_TOKEN}",
     "Accept": "application/vnd.github+json",
 }
 
 
 def get_github_service() -> GitHubService:
-    match settings.GITHUB_BACKEND:
+    match settings.GH_BACKEND:
         case "api":
             return ApiGitHubService()
         case "console":
             return ConsoleGitHubService()
         case _:
-            raise RuntimeError(f"Unknown GITHUB_BACKEND: {settings.GITHUB_BACKEND}")
+            raise RuntimeError(f"Unknown GH_BACKEND: {settings.GH_BACKEND}")
 
 
 class GitHubService(ABC):
