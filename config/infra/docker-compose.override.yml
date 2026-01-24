@@ -19,7 +19,7 @@ services:
         restart: no
         ports:
             - '1080:1080' # web ui
-            - '1025:1025' # smtp
+            - '${SMTP_PORT?}:1025' # smtp
 
     server:
         pull_policy: build
