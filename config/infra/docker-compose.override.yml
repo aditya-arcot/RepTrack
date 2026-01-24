@@ -19,7 +19,14 @@ services:
         restart: no
         ports:
             - '1080:1080' # web ui
-            - '1025:1025' # smtp
+            - '${SMTP_PORT?}:1025' # smtp
+
+        labels:
+            - traefik.enable=true
+            - traefik.prod=${PROD?}
+            - traefik.http.routers.${PROJECT?}-${ENV?}-mailcatcher.rule=Host(`mail.${DOMAIN?}`)
+            - traefik.http.routers.${PROJECT?}-${ENV?}-mailcatcher.entrypoints=web
+            - traefik.http.services.${PROJECT?}-${ENV?}-mailcatcher.loadbalancer.server.port=1080
 
     server:
         pull_policy: build

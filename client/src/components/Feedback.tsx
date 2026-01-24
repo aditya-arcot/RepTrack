@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { notify } from '@/lib/notify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Label } from '@radix-ui/react-label'
 import { useState } from 'react'
@@ -36,12 +37,14 @@ export function Feedback() {
         handleSubmit,
         setValue,
         watch,
-        formState: { errors, isSubmitting, isDirty },
+        formState: { errors, isDirty, isSubmitting },
         reset,
     } = useForm<FeedbackForm>({
         resolver: zodResolver(feedbackFormSchema),
         defaultValues: {
             type: 'feedback',
+            title: '',
+            description: '',
         },
         mode: 'onSubmit',
         reValidateMode: 'onChange',
@@ -58,6 +61,8 @@ export function Feedback() {
                 files: files,
             },
         })
+        // TODO check status
+        notify.success('Success submitting feedback')
         reset()
         setFiles([])
         setOpen(false)
