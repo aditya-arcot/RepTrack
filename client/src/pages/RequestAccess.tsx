@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { notify } from '@/lib/notify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -31,17 +32,13 @@ export function RequestAccess() {
 
     const onSubmit = async (data: RequestAccessForm) => {
         const res = await AuthService.requestAccess({ body: data })
-        // TODO handle based on status
+        // TODO check status
         if (res.status !== 200) {
-            // TODO show error message
-            // eslint-disable-next-line no-console
-            console.log('Error requesting access', res)
+            notify.error('Error requesting access')
             reset()
             return
         }
-        // TODO show success message
-        // eslint-disable-next-line no-console
-        console.log('Access requested successfully')
+        notify.success('Success requesting access')
         reset()
     }
 

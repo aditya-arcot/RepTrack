@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { notify } from '@/lib/notify'
 import type { LocationState } from '@/models/location'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -42,11 +43,11 @@ export function Login() {
     const onSubmit = async (data: LoginForm) => {
         const res = await AuthService.login({ body: data })
         if (res.status === 401) {
-            // TODO show error message
+            notify.error('Invalid username or password')
             reset({ password: '' })
             return
         }
-        // TODO show success message
+        notify.success('Success logging in')
         await refresh()
         void navigate(from, { replace: true })
     }
