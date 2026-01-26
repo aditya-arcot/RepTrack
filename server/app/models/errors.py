@@ -22,19 +22,19 @@ class HTTPError(HTTPException):
 class EmailAlreadyRegistered(HTTPError):
     status_code = status.HTTP_409_CONFLICT
     code = "email_already_registered"
-    detail = "This email is already registered. Please log in."
+    detail = "Email already registered. Log in"
 
 
 class AccessRequestPending(HTTPError):
     status_code = status.HTTP_409_CONFLICT
     code = "access_request_pending"
-    detail = "An access request for this email is already pending"
+    detail = "Access already requested. Wait for admin approval"
 
 
 class AccessRequestRejected(HTTPError):
     status_code = status.HTTP_403_FORBIDDEN
     code = "access_request_rejected"
-    detail = "An access request for this email was previously rejected"
+    detail = "Access previously rejected"
 
 
 class InvalidCredentials(HTTPError):

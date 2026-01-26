@@ -9,10 +9,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const loadSession = async () => {
         setLoading(true)
         try {
-            const res = await UserService.getCurrentUser()
-            setUser(res.data ?? null)
-        } catch {
-            setUser(null)
+            const { data, error } = await UserService.getCurrentUser()
+            if (error) {
+                setUser(null)
+                return
+            }
+            setUser(data)
         } finally {
             setLoading(false)
         }

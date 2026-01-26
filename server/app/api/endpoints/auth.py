@@ -43,9 +43,9 @@ async def request_access_endpoint(
 
     detail = ""
     if already_approved:
-        detail = "Access request already approved. Approval email resent."
+        detail = "Access already approved. Approval email resent"
     else:
-        detail = "Access request created. Please wait for admin approval."
+        detail = "Requested access. Wait for admin approval"
 
     return RequestAccessResponse(
         detail=detail,

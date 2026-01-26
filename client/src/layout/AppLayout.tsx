@@ -11,9 +11,12 @@ export function AppLayout() {
     const navigate = useNavigate()
 
     const handleLogout = async () => {
-        await AuthService.logout()
-        // TODO check status
-        notify.success('Logged out successfully')
+        const { error } = await AuthService.logout()
+        if (error) {
+            notify.error('Failed to log out')
+            return
+        }
+        notify.success('Logged out')
         await refresh()
         void navigate('/login', { replace: true })
     }
