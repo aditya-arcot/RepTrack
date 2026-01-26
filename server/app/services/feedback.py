@@ -11,7 +11,7 @@ from app.services.storage import store_files
 
 logger = logging.getLogger(__name__)
 
-FEEDBACK_DIR = settings.DATA_DIR / "feedback"
+FEEDBACK_DIR = settings.data_dir / "feedback"
 
 
 async def create_feedback(

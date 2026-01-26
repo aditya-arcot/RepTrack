@@ -11,24 +11,13 @@ from app.utilities.date import get_utc_timestamp_str
 
 logger = logging.getLogger(__name__)
 
-GITHUB_API_URL_REPO = (
-    f"https://api.github.com/repos/{settings.REPO_OWNER}/{settings.REPO_NAME}"
-)
-
-HEADERS = {
-    "Authorization": f"Bearer {settings.GH_TOKEN}",
-    "Accept": "application/vnd.github+json",
-}
-
 
 def get_github_service() -> GitHubService:
-    match settings.GH_BACKEND:
+    match settings.github.backend:
         case "api":
             return ApiGitHubService()
         case "console":
             return ConsoleGitHubService()
-        case _:
-            raise RuntimeError(f"Unknown GH_BACKEND: {settings.GH_BACKEND}")
 
 
 class GitHubService(ABC):
@@ -37,10 +26,17 @@ class GitHubService(ABC):
 
 
 class ApiGitHubService(GitHubService):
+    GITHUB_API_URL_REPO = f"https://api.github.com/repos/{settings.github.repo_owner}/{settings.repo_name}"
+
+    HEADERS = {
+        "Authorization": f"Bearer {settings.github.token}",
+        "Accept": "application/vnd.github+json",
+    }
+
     async def create_feedback_issue(self, feedback: Feedback):
         logging.info(f"Creating GitHub issue for feedback id: {feedback.id}")
 
-        url = f"{GITHUB_API_URL_REPO}/issues"
+        url = f"{self.GITHUB_API_URL_REPO}/issues"
 
         if feedback.type == FeedbackType.feedback:
             title = f"[Feedback] {feedback.title}"
@@ -73,10 +69,10 @@ class ApiGitHubService(GitHubService):
         payload: dict[str, Any] = {
             "title": title,
             "body": body,
-            "assignees": [settings.REPO_OWNER],
+            "assignees": [settings.github.repo_owner],
         }
         async with httpx.AsyncClient() as client:
-            resp = await client.post(url, headers=HEADERS, json=payload)
+            resp = await client.post(url, headers=self.HEADERS, json=payload)
             resp.raise_for_status()
 
         logging.info(f"Created GitHub issue for feedback id: {feedback.id}")

@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 
 def create_directories():
-    settings.DATA_DIR.mkdir(parents=True, exist_ok=True)
-    settings.LOG_DIR.mkdir(parents=True, exist_ok=True)
+    settings.data_dir.mkdir(parents=True, exist_ok=True)
+    settings.log_dir.mkdir(parents=True, exist_ok=True)
 
 
 @asynccontextmanager
@@ -28,17 +28,17 @@ async def lifespan(_: FastAPI):
 
 
 title = "RepTrack"
-if settings.ENV != "prod":
-    title += f" ({settings.ENV})"
+if settings.env != "prod":
+    title += f" ({settings.env})"
 
-if settings.IS_PROD:
+if settings.is_prod:
     app = FastAPI(title=title, lifespan=lifespan, docs_url=None, redoc_url=None)
 else:
     app = FastAPI(title=title, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_URLS,
+    allow_origins=settings.cors_urls,
     allow_credentials=True,
     allow_methods=["*"],
 )

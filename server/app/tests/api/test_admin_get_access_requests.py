@@ -32,7 +32,7 @@ async def test_get_access_requests_non_admin_user(
 ):
     await session.execute(
         update(User)
-        .where(User.username == settings.ADMIN_USERNAME)
+        .where(User.username == settings.admin.username)
         .values(is_admin=False)
     )
     await session.commit()
