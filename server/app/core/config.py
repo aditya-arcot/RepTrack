@@ -237,7 +237,8 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_file="../config/env/.env",
-        env_nested_delimiter=".",
+        # dot delimiter prevents loading in bash
+        env_nested_delimiter="__",
         extra="ignore",
     )
 
