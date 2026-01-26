@@ -23,7 +23,7 @@ async def test_get_access_requests(client: AsyncClient):
     assert resp.status_code == 200
     body = resp.json()
     assert isinstance(body, list)
-    for item in body:  # type: ignore
+    for item in body:
         UserPublic.model_validate(item)
 
 
