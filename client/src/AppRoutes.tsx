@@ -7,7 +7,7 @@ import { Dashboard } from '@/pages/Dashboard'
 import { Docs } from '@/pages/Docs'
 import { Login } from '@/pages/Login'
 import { RequestAccess } from '@/pages/RequestAccess'
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router'
 
 export function AppRoutes() {
     return (
@@ -42,6 +42,7 @@ export function AppRoutes() {
                     </RequireGuest>
                 }
             />
+            <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     )
 }
