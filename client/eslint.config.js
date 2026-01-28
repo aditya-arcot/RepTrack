@@ -39,6 +39,11 @@ export default defineConfig([
                             message:
                                 'Use @/ path alias instead of relative path',
                         },
+                        {
+                            group: ['@radix-ui/*'],
+                            message:
+                                'Use components from @/components/ui instead of radix-ui directly',
+                        },
                     ],
                     paths: [
                         {

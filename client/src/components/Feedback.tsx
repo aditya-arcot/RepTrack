@@ -1,5 +1,3 @@
-'use-no-memo'
-
 import { FeedbackService } from '@/api/generated'
 import { zCreateFeedbackRequest } from '@/api/generated/zod.gen'
 import { Button } from '@/components/ui/button'
@@ -14,11 +12,11 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { isHttpError, isHttpValidationError } from '@/lib/http'
 import { notify } from '@/lib/notify'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Label } from '@radix-ui/react-label'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
