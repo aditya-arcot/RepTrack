@@ -3,6 +3,36 @@
 import { z } from 'zod';
 
 /**
+ * AccessRequestStatus
+ */
+export const zAccessRequestStatus = z.enum([
+    'pending',
+    'approved',
+    'rejected'
+]);
+
+/**
+ * AccessRequestPublic
+ */
+export const zAccessRequestPublic = z.object({
+    id: z.int(),
+    email: z.string(),
+    first_name: z.string(),
+    last_name: z.string(),
+    status: zAccessRequestStatus,
+    reviewed_at: z.union([
+        z.iso.datetime(),
+        z.null()
+    ]),
+    reviewed_by: z.union([
+        z.int(),
+        z.null()
+    ]),
+    created_at: z.iso.datetime(),
+    updated_at: z.iso.datetime()
+});
+
+/**
  * ErrorResponse
  */
 export const zErrorResponse = z.object({
@@ -76,6 +106,13 @@ export const zGetAccessRequestsData = z.object({
     path: z.optional(z.never()),
     query: z.optional(z.never())
 });
+
+/**
+ * Response Getaccessrequests
+ *
+ * Successful Response
+ */
+export const zGetAccessRequestsResponse = z.array(zAccessRequestPublic);
 
 export const zRequestAccessData = z.object({
     body: zRequestAccessRequest,

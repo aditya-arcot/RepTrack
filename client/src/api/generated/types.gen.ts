@@ -5,6 +5,50 @@ export type ClientOptions = {
 };
 
 /**
+ * AccessRequestPublic
+ */
+export type AccessRequestPublic = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Email
+     */
+    email: string;
+    /**
+     * First Name
+     */
+    first_name: string;
+    /**
+     * Last Name
+     */
+    last_name: string;
+    status: AccessRequestStatus;
+    /**
+     * Reviewed At
+     */
+    reviewed_at: string | null;
+    /**
+     * Reviewed By
+     */
+    reviewed_by: number | null;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
+};
+
+/**
+ * AccessRequestStatus
+ */
+export type AccessRequestStatus = 'pending' | 'approved' | 'rejected';
+
+/**
  * CreateFeedbackRequest
  */
 export type CreateFeedbackRequest = {
@@ -158,10 +202,14 @@ export type GetAccessRequestsError = GetAccessRequestsErrors[keyof GetAccessRequ
 
 export type GetAccessRequestsResponses = {
     /**
+     * Response Getaccessrequests
+     *
      * Successful Response
      */
-    200: unknown;
+    200: Array<AccessRequestPublic>;
 };
+
+export type GetAccessRequestsResponse = GetAccessRequestsResponses[keyof GetAccessRequestsResponses];
 
 export type RequestAccessData = {
     body: RequestAccessRequest;
