@@ -121,7 +121,7 @@ export function Login() {
                         disabled={isSubmitting}
                         type="submit"
                     >
-                        {isSubmitting ? 'Logging in…' : 'Login'}
+                        {isSubmitting ? 'Logging in...' : 'Login'}
                     </Button>
                     <div className="flex flex-col items-center gap-1 text-sm">
                         <div className="text-muted-foreground">

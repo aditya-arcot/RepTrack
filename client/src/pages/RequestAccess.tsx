@@ -140,7 +140,7 @@ export function RequestAccess() {
                         disabled={isSubmitting}
                         type="submit"
                     >
-                        {isSubmitting ? 'Submitting…' : 'Request Access'}
+                        {isSubmitting ? 'Submitting...' : 'Request Access'}
                     </Button>
                     <div className="flex flex-col items-center gap-1 text-sm">
                         <div className="text-muted-foreground">

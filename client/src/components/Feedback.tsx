@@ -211,7 +211,7 @@ export function Feedback() {
                             isSubmitting || !(isDirty || files.length > 0)
                         }
                     >
-                        {isSubmitting ? 'Submitting…' : 'Submit'}
+                        {isSubmitting ? 'Submitting...' : 'Submit'}
                     </Button>
                 </DialogFooter>
             </DialogContent>
