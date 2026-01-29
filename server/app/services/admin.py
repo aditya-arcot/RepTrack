@@ -1,5 +1,6 @@
 from sqlalchemy import case, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.models.database.access_request import AccessRequest
 from app.models.database.user import User
@@ -16,6 +17,7 @@ status_priority = case(
 async def get_access_requests(db: AsyncSession) -> list[AccessRequestPublic]:
     result = await db.execute(
         select(AccessRequest)
+        .options(selectinload(AccessRequest.reviewer))
         .order_by(status_priority)
         .order_by(AccessRequest.updated_at.desc())
         .order_by(AccessRequest.id.desc())

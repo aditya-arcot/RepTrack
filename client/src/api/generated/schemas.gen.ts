@@ -33,16 +33,15 @@ export const AccessRequestPublicSchema = {
             ],
             title: 'Reviewed At'
         },
-        reviewed_by: {
+        reviewer: {
             anyOf: [
                 {
-                    type: 'integer'
+                    $ref: '#/components/schemas/ReviewerPublic'
                 },
                 {
                     type: 'null'
                 }
-            ],
-            title: 'Reviewed By'
+            ]
         },
         created_at: {
             type: 'string',
@@ -63,7 +62,7 @@ export const AccessRequestPublicSchema = {
         'last_name',
         'status',
         'reviewed_at',
-        'reviewed_by',
+        'reviewer',
         'created_at',
         'updated_at'
     ],
@@ -215,6 +214,25 @@ export const RequestAccessRequestSchema = {
         'last_name'
     ],
     title: 'RequestAccessRequest'
+} as const;
+
+export const ReviewerPublicSchema = {
+    properties: {
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        username: {
+            type: 'string',
+            title: 'Username'
+        }
+    },
+    type: 'object',
+    required: [
+        'id',
+        'username'
+    ],
+    title: 'ReviewerPublic'
 } as const;
 
 export const UserPublicSchema = {

@@ -12,27 +12,6 @@ export const zAccessRequestStatus = z.enum([
 ]);
 
 /**
- * AccessRequestPublic
- */
-export const zAccessRequestPublic = z.object({
-    id: z.int(),
-    email: z.string(),
-    first_name: z.string(),
-    last_name: z.string(),
-    status: zAccessRequestStatus,
-    reviewed_at: z.union([
-        z.iso.datetime(),
-        z.null()
-    ]),
-    reviewed_by: z.union([
-        z.int(),
-        z.null()
-    ]),
-    created_at: z.iso.datetime(),
-    updated_at: z.iso.datetime()
-});
-
-/**
  * ErrorResponse
  */
 export const zErrorResponse = z.object({
@@ -71,6 +50,35 @@ export const zRequestAccessRequest = z.object({
     email: z.email(),
     first_name: z.string().min(1).max(50),
     last_name: z.string().min(1).max(50)
+});
+
+/**
+ * ReviewerPublic
+ */
+export const zReviewerPublic = z.object({
+    id: z.int(),
+    username: z.string()
+});
+
+/**
+ * AccessRequestPublic
+ */
+export const zAccessRequestPublic = z.object({
+    id: z.int(),
+    email: z.string(),
+    first_name: z.string(),
+    last_name: z.string(),
+    status: zAccessRequestStatus,
+    reviewed_at: z.union([
+        z.iso.datetime(),
+        z.null()
+    ]),
+    reviewer: z.union([
+        zReviewerPublic,
+        z.null()
+    ]),
+    created_at: z.iso.datetime(),
+    updated_at: z.iso.datetime()
 });
 
 /**

@@ -29,10 +29,7 @@ export type AccessRequestPublic = {
      * Reviewed At
      */
     reviewed_at: string | null;
-    /**
-     * Reviewed By
-     */
-    reviewed_by: number | null;
+    reviewer: ReviewerPublic | null;
     /**
      * Created At
      */
@@ -130,6 +127,20 @@ export type RequestAccessRequest = {
      * Last Name
      */
     last_name: string;
+};
+
+/**
+ * ReviewerPublic
+ */
+export type ReviewerPublic = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Username
+     */
+    username: string;
 };
 
 /**

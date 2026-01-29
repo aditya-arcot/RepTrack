@@ -107,7 +107,15 @@ const columns: ColumnDef<AccessRequestPublic>[] = [
         },
         enableHiding: false,
     },
-    // TODO reviewed by
+    {
+        accessorKey: 'reviewer.username',
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Reviewed By" />
+        ),
+        cell: ({ row }) =>
+            row.original.reviewer ? row.original.reviewer.username : '—',
+        enableHiding: false,
+    },
     {
         accessorKey: 'reviewed_at',
         header: ({ column }) => (
