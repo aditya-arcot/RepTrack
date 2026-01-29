@@ -9,6 +9,11 @@ import { DataTableColumnHeader } from '@/components/data-table/DataTableColumnHe
 import { DataTableInlineRowActions } from '@/components/data-table/DataTableInlineRowActions'
 import { createSelectColumn } from '@/components/data-table/DataTableSelectColumn'
 import { Badge } from '@/components/ui/badge'
+import {
+    blueBadgeClassName,
+    greenBadgeClassName,
+    redBadgeClassName,
+} from '@/lib/styles'
 import type {
     DataTableRowActionsConfig,
     DataTableToolbarConfig,
@@ -20,23 +25,11 @@ import { Check, X } from 'lucide-react'
 function StatusBadge({ status }: { status: AccessRequestStatus }) {
     switch (status) {
         case 'pending':
-            return (
-                <Badge className="bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-                    Pending
-                </Badge>
-            )
+            return <Badge className={blueBadgeClassName}>Pending</Badge>
         case 'approved':
-            return (
-                <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
-                    Approved
-                </Badge>
-            )
+            return <Badge className={greenBadgeClassName}>Approved</Badge>
         case 'rejected':
-            return (
-                <Badge className="bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300">
-                    Rejected
-                </Badge>
-            )
+            return <Badge className={redBadgeClassName}>Rejected</Badge>
     }
 }
 
@@ -109,8 +102,8 @@ const columns: ColumnDef<AccessRequestPublic>[] = [
                 </div>
             )
         },
-        filterFn: (row, id, value) => {
-            return (value as string[]).includes(row.getValue(id))
+        filterFn: (row, id, value: string[]) => {
+            return value.includes(row.getValue(id))
         },
         enableHiding: false,
     },
@@ -161,7 +154,7 @@ const columns: ColumnDef<AccessRequestPublic>[] = [
 const toolbarConfig: DataTableToolbarConfig = {
     search: {
         columnId: 'name',
-        placeholder: 'Filter names...',
+        placeholder: 'Filter by name...',
     },
     filters: [
         {
