@@ -82,7 +82,9 @@ export const zUserPublic = z.object({
     email: z.string(),
     first_name: z.string(),
     last_name: z.string(),
-    is_admin: z.boolean()
+    is_admin: z.boolean(),
+    created_at: z.iso.datetime(),
+    updated_at: z.iso.datetime()
 });
 
 /**

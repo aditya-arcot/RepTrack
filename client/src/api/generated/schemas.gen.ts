@@ -242,6 +242,16 @@ export const UserPublicSchema = {
         is_admin: {
             type: 'boolean',
             title: 'Is Admin'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
         }
     },
     type: 'object',
@@ -251,7 +261,9 @@ export const UserPublicSchema = {
         'email',
         'first_name',
         'last_name',
-        'is_admin'
+        'is_admin',
+        'created_at',
+        'updated_at'
     ],
     title: 'UserPublic'
 } as const;

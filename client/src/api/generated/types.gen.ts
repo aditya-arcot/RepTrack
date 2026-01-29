@@ -160,6 +160,14 @@ export type UserPublic = {
      * Is Admin
      */
     is_admin: boolean;
+    /**
+     * Created At
+     */
+    created_at: string;
+    /**
+     * Updated At
+     */
+    updated_at: string;
 };
 
 /**
