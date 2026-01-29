@@ -22,7 +22,7 @@ export function AppLayout() {
     }
 
     return (
-        <div className="flex h-dvh flex-col bg-muted">
+        <div className="flex min-h-screen flex-col bg-muted">
             <header className="border-b bg-background">
                 <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
                     <div className="flex items-baseline gap-4">
