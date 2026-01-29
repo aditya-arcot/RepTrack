@@ -2,7 +2,9 @@ from sqlalchemy import case, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.database.access_request import AccessRequest
+from app.models.database.user import User
 from app.models.schemas.access_request import AccessRequestPublic
+from app.models.schemas.user import UserPublic
 
 status_priority = case(
     (AccessRequest.status == "pending", 1),
@@ -21,4 +23,17 @@ async def get_access_requests(db: AsyncSession) -> list[AccessRequestPublic]:
     return [
         AccessRequestPublic.model_validate(ar, from_attributes=True)
         for ar in result.scalars().all()
+    ]
+
+
+async def get_users(db: AsyncSession) -> list[UserPublic]:
+    result = await db.execute(
+        select(User)
+        .order_by(User.username.asc())
+        .order_by(User.updated_at.desc())
+        .order_by(User.id.desc())
+    )
+    return [
+        UserPublic.model_validate(user, from_attributes=True)
+        for user in result.scalars().all()
     ]

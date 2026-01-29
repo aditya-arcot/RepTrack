@@ -114,6 +114,19 @@ export const zGetAccessRequestsData = z.object({
  */
 export const zGetAccessRequestsResponse = z.array(zAccessRequestPublic);
 
+export const zGetUsersData = z.object({
+    body: z.optional(z.never()),
+    path: z.optional(z.never()),
+    query: z.optional(z.never())
+});
+
+/**
+ * Response Getusers
+ *
+ * Successful Response
+ */
+export const zGetUsersResponse = z.array(zUserPublic);
+
 export const zRequestAccessData = z.object({
     body: zRequestAccessRequest,
     path: z.optional(z.never()),

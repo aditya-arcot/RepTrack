@@ -211,6 +211,37 @@ export type GetAccessRequestsResponses = {
 
 export type GetAccessRequestsResponse = GetAccessRequestsResponses[keyof GetAccessRequestsResponses];
 
+export type GetUsersData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/admin/users';
+};
+
+export type GetUsersErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorResponse;
+    /**
+     * Forbidden
+     */
+    403: ErrorResponse;
+};
+
+export type GetUsersError = GetUsersErrors[keyof GetUsersErrors];
+
+export type GetUsersResponses = {
+    /**
+     * Response Getusers
+     *
+     * Successful Response
+     */
+    200: Array<UserPublic>;
+};
+
+export type GetUsersResponse = GetUsersResponses[keyof GetUsersResponses];
+
 export type RequestAccessData = {
     body: RequestAccessRequest;
     path?: never;
