@@ -8,7 +8,8 @@
         "dev": "vite",
         "generate-api": "openapi-ts",
         "lint": "eslint --fix --max-warnings=0",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "update-components": "for file in src/components/ui/*.tsx; do npx shadcn@latest add -o $(basename \"$file\" .tsx); done"
     },
     "lint-staged": {
         "*": [
