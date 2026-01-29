@@ -3,6 +3,7 @@ import { RequireGuest } from '@/auth/RequireGuest'
 import { Doc } from '@/components/Doc'
 import { DocsIndex } from '@/components/DocsIndex'
 import { AppLayout } from '@/layout/AppLayout'
+import { Admin } from '@/pages/Admin'
 import { Dashboard } from '@/pages/Dashboard'
 import { Docs } from '@/pages/Docs'
 import { Login } from '@/pages/Login'
@@ -25,6 +26,7 @@ export function AppRoutes() {
                     <Route index element={<DocsIndex />} />
                     <Route path=":slug" element={<Doc />} />
                 </Route>
+                <Route path="admin" element={<Admin />} />
             </Route>
             <Route
                 path="/request-access"

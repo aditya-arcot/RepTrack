@@ -32,6 +32,7 @@ export function AppLayout() {
                         <nav className="flex items-center gap-4">
                             <NavItem to="/">Dashboard</NavItem>
                             <NavItem to="/docs">Docs</NavItem>
+                            <NavItem to="/admin">Admin</NavItem>
                         </nav>
                     </div>
                     <div className="flex items-center gap-2">
