@@ -22,18 +22,18 @@ api_router = APIRouter(prefix="/auth", tags=["Auth"])
     },
 )
 async def request_access_endpoint(
-    payload: RequestAccessRequest,
+    req: RequestAccessRequest,
     background_tasks: BackgroundTasks,
     db: Annotated[AsyncSession, Depends(get_db)],
     email_svc: Annotated[EmailService, Depends(get_email_service)],
 ) -> str:
     already_approved = await request_access(
-        first_name=payload.first_name,
-        last_name=payload.last_name,
+        first_name=req.first_name,
+        last_name=req.last_name,
         email_svc=email_svc,
         background_tasks=background_tasks,
         db=db,
-        email=payload.email,
+        email=req.email,
     )
     if already_approved:
         return "Access already approved. Approval email resent"
@@ -49,12 +49,12 @@ async def request_access_endpoint(
     },
 )
 async def login_endpoint(
-    payload: LoginRequest,
+    req: LoginRequest,
     db: Annotated[AsyncSession, Depends(get_db)],
-    response: Response,
+    res: Response,
 ):
-    result = await login(username=payload.username, password=payload.password, db=db)
-    response.set_cookie(
+    result = await login(username=req.username, password=req.password, db=db)
+    res.set_cookie(
         key="access_token",
         value=result.access_token,
         httponly=True,
@@ -62,7 +62,7 @@ async def login_endpoint(
         samesite=settings.cookie_same_site,
         max_age=60 * 60,  # 1 hour
     )
-    response.set_cookie(
+    res.set_cookie(
         key="refresh_token",
         value=result.refresh_token,
         httponly=True,
@@ -83,10 +83,10 @@ async def login_endpoint(
 async def refresh_token_endpoint(
     db: Annotated[AsyncSession, Depends(get_db)],
     refresh_token: Annotated[str, Depends(refresh_token_cookie)],
-    response: Response,
+    res: Response,
 ):
     access_token = await refresh(db=db, token=refresh_token)
-    response.set_cookie(
+    res.set_cookie(
         key="access_token",
         value=access_token,
         httponly=True,
@@ -101,14 +101,14 @@ async def refresh_token_endpoint(
     operation_id="logout",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-async def logout_endpoint(response: Response):
-    response.delete_cookie(
+async def logout_endpoint(res: Response):
+    res.delete_cookie(
         key="access_token",
         httponly=True,
         secure=settings.cookie_secure,
         samesite=settings.cookie_same_site,
     )
-    response.delete_cookie(
+    res.delete_cookie(
         key="refresh_token",
         httponly=True,
         secure=settings.cookie_secure,

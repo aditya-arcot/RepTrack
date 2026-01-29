@@ -28,12 +28,12 @@ def create_feedback_endpoint(
     background_tasks: BackgroundTasks,
     db: Annotated[AsyncSession, Depends(get_db)],
     github_svc: Annotated[GitHubService, Depends(get_github_service)],
-    payload: CreateFeedbackRequest = Form(..., media_type="multipart/form-data"),
+    req: CreateFeedbackRequest = Form(..., media_type="multipart/form-data"),
 ):
     background_tasks.add_task(
         create_feedback,
         user=user,
-        payload=payload,
+        req=req,
         db=db,
         github_svc=github_svc,
     )
