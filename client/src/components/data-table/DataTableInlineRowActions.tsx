@@ -30,7 +30,7 @@ export function DataTableInlineRowActions<TData>({
                         key={index}
                         size="xs"
                         variant="outline"
-                        className={item.className}
+                        className={`${item.className ?? ''} h-5`}
                         onClick={() => void item.onSelect?.(rowData)}
                         disabled={item.disabled}
                     >

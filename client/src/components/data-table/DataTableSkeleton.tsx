@@ -20,7 +20,7 @@ export function DataTableSkeleton({ columnCount }: DataTableSkeletonProps) {
                     <TableRow>
                         {Array.from({ length: columnCount }).map((_, i) => (
                             <TableHead key={i}>
-                                <Skeleton className="h-6 w-20" />
+                                <Skeleton className="w-20" />
                             </TableHead>
                         ))}
                     </TableRow>
@@ -30,8 +30,8 @@ export function DataTableSkeleton({ columnCount }: DataTableSkeletonProps) {
                         <TableRow key={rowIndex}>
                             {Array.from({ length: columnCount }).map(
                                 (_, cellIndex) => (
-                                    <TableCell key={cellIndex}>
-                                        <Skeleton className="h-6 w-full" />
+                                    <TableCell key={cellIndex} className="h-10">
+                                        <Skeleton className="w-full" />
                                     </TableCell>
                                 )
                             )}
