@@ -10,7 +10,7 @@ from app.core.security import (
     create_refresh_token,
     verify_token,
 )
-from app.models.api import LoginResult, RequestAccessResult
+from app.models.api import LoginResult
 from app.models.database.access_request import AccessRequest, AccessRequestStatus
 from app.models.database.user import User
 from app.models.errors import (
@@ -32,8 +32,9 @@ async def request_access(
     background_tasks: BackgroundTasks,
     db: AsyncSession,
     email_svc: EmailService,
-) -> RequestAccessResult:
-    logger.info(f"Received access request for email: {email}")
+) -> bool:
+    """Returns True if access was already approved, False otherwise"""
+    logger.info(f"Requesting access for email: {email}")
 
     existing_user = (
         await db.execute(select(User).where(User.email == email))
@@ -59,10 +60,7 @@ async def request_access(
                 background_tasks.add_task(
                     email_svc.send_access_request_approved_email, existing_request
                 )
-                return RequestAccessResult(
-                    already_approved=True,
-                    access_request=existing_request,
-                )
+                return True
 
     access_request = AccessRequest(
         email=email,
@@ -80,14 +78,11 @@ async def request_access(
             email_svc.send_access_request_notification, admin.email, access_request
         )
 
-    return RequestAccessResult(
-        already_approved=False,
-        access_request=access_request,
-    )
+    return False
 
 
 async def login(username: str, password: str, db: AsyncSession) -> LoginResult:
-    logger.info(f"Received login attempt for user: {username}")
+    logger.info(f"Logging in for user: {username}")
 
     user = await authenticate_user(username, password, db)
     if not user:
@@ -103,7 +98,7 @@ async def login(username: str, password: str, db: AsyncSession) -> LoginResult:
 
 
 async def refresh(db: AsyncSession, token: str) -> str:
-    logger.info("Received token refresh request")
+    logger.info("Refreshing access token")
 
     username = verify_token(token)
     user = (
