@@ -144,11 +144,14 @@ export function AccessRequestsTable({
             }
             notify.success('Access request status updated')
             const date = new Date().toISOString()
-            request.status = status
-            request.reviewed_at = date
-            request.reviewer = user
-            request.updated_at = date
-            onRequestUpdated(request)
+            const updatedRequest = {
+                ...request,
+                status,
+                reviewed_at: date,
+                reviewer: user,
+                updated_at: date,
+            }
+            onRequestUpdated(updatedRequest)
         } finally {
             setLoadingRequestIds((prev) => {
                 const next = new Set(prev)
