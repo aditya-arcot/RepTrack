@@ -1,6 +1,7 @@
 import logging
 from typing import Literal
 
+from fastapi import BackgroundTasks
 from sqlalchemy import case, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -12,6 +13,7 @@ from app.models.enums import AccessRequestStatus
 from app.models.errors import AccessRequestStatusError, NotFound
 from app.models.schemas.access_request import AccessRequestPublic
 from app.models.schemas.user import UserPublic
+from app.services.email import EmailService
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +46,8 @@ async def update_access_request_status(
     status: Literal[AccessRequestStatus.APPROVED, AccessRequestStatus.REJECTED],
     db: AsyncSession,
     user: UserPublic,
+    background_tasks: BackgroundTasks,
+    email_svc: EmailService,
 ) -> None:
     logger.info(f"Updating access request {access_request_id} to status {status}")
 
@@ -65,7 +69,14 @@ async def update_access_request_status(
     access_request.reviewed_by = user.id
     await db.commit()
 
-    # TODO send email
+    if status == AccessRequestStatus.APPROVED:
+        background_tasks.add_task(
+            email_svc.send_access_request_approved_email, access_request
+        )
+    else:
+        background_tasks.add_task(
+            email_svc.send_access_request_rejected_email, access_request
+        )
 
 
 async def get_users(db: AsyncSession) -> list[UserPublic]:

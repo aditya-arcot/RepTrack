@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, BackgroundTasks, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_current_admin, get_db
@@ -15,6 +15,7 @@ from app.services.admin import (
     get_users,
     update_access_request_status,
 )
+from app.services.email import EmailService, get_email_service
 
 api_router = APIRouter(
     prefix="/admin", tags=["Admin"], dependencies=[Depends(get_current_admin)]
@@ -51,12 +52,16 @@ async def update_access_request_status_endpoint(
     req: UpdateAccessRequestStatusRequest,
     user: Annotated[UserPublic, Depends(get_current_admin)],
     db: Annotated[AsyncSession, Depends(get_db)],
+    background_tasks: BackgroundTasks,
+    email_svc: Annotated[EmailService, Depends(get_email_service)],
 ):
     await update_access_request_status(
         access_request_id=access_request_id,
         status=req.status,
         user=user,
         db=db,
+        background_tasks=background_tasks,
+        email_svc=email_svc,
     )
 
 
