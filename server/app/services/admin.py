@@ -19,9 +19,9 @@ logger = logging.getLogger(__name__)
 
 
 status_priority = case(
-    (AccessRequest.status == "pending", 1),
-    (AccessRequest.status == "approved", 2),
-    (AccessRequest.status == "rejected", 3),
+    (AccessRequest.status == AccessRequestStatus.PENDING, 1),
+    (AccessRequest.status == AccessRequestStatus.APPROVED, 2),
+    (AccessRequest.status == AccessRequestStatus.REJECTED, 3),
 )
 
 

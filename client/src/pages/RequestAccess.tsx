@@ -37,13 +37,14 @@ export function RequestAccess() {
         const { data, error } = await AuthService.requestAccess({ body: form })
         if (error) {
             if (isHttpError(error)) {
-                notify.error(error.detail)
                 if (error.code === 'email_already_registered') {
+                    notify.error(error.detail)
                     void navigate('/login', { replace: true })
                 } else if (
                     error.code === 'access_request_pending' ||
                     error.code === 'access_request_rejected'
                 ) {
+                    notify.error(error.detail)
                     reset()
                 } else {
                     notify.error('Failed to request access')

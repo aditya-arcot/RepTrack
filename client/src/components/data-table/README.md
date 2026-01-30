@@ -124,7 +124,7 @@ import { Shield, User as UserIcon } from 'lucide-react'
 
 export const userToolbarConfig: DataTableToolbarConfig = {
     // search configuration
-    searchConfig: {
+    search: {
         columnId: 'name',
         placeholder: 'Search users...',
         className: 'h-8 w-[150px] lg:w-[250px]',
@@ -210,7 +210,7 @@ export const userRowActionsConfig: DataTableRowActionsConfig<User> = {
             label: '',
         },
         {
-            type: 'destructive',
+            type: 'action',
             label: 'Delete',
             shortcut: '⌘⌫',
             onSelect: (data) => {
@@ -235,7 +235,7 @@ export function UsersPage() {
                 columns={columns}
                 toolbarConfig={userToolbarConfig}
                 pageSize={25}
-                enableRowSelection={true}
+                isLoading={false}
             />
         </div>
     )
