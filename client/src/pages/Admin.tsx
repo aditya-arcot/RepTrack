@@ -85,6 +85,7 @@ export function Admin() {
                         requests={requests}
                         isLoading={loadingRequests}
                         onRequestUpdated={handleRequestUpdated}
+                        onReloadRequests={loadAccessRequests}
                     />
                 </CardContent>
             </Card>

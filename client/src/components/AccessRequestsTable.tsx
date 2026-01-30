@@ -69,12 +69,14 @@ interface AccessRequestsTableProps {
     requests: AccessRequestPublic[]
     isLoading: boolean
     onRequestUpdated: (request: AccessRequestPublic) => void
+    onReloadRequests: () => Promise<void>
 }
 
 export function AccessRequestsTable({
     requests,
     isLoading,
     onRequestUpdated,
+    onReloadRequests,
 }: AccessRequestsTableProps) {
     const { user } = useSession()
     const [loadingRequestIds, setLoadingRequestIds] = useState<Set<number>>(
@@ -122,9 +124,15 @@ export function AccessRequestsTable({
                 },
             })
             if (error) {
-                // TODO refresh stale data?
                 if (isHttpError(error)) {
-                    notify.error(error.detail)
+                    if (error.code === 'access_request_status_error') {
+                        notify.warning(
+                            'This access request has already been reviewed. Reloading the latest data'
+                        )
+                        await onReloadRequests()
+                    } else {
+                        notify.error(error.detail)
+                    }
                 } else if (isHttpValidationError(error)) {
                     error.detail?.forEach((detail) => {
                         notify.error(`Validation error: ${detail.msg}`)
@@ -298,7 +306,7 @@ export function AccessRequestsTable({
                     setConfirmDialog({ ...confirmDialog, isOpen })
                 }}
             >
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>
                             {confirmDialog.action === 'approved'
