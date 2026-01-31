@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
@@ -59,3 +59,6 @@ class RegistrationToken(Base):
     access_request: Mapped[AccessRequest] = relationship(
         "AccessRequest",
     )
+
+    def is_expired(self) -> bool:
+        return datetime.now(timezone.utc) >= self.expires_at

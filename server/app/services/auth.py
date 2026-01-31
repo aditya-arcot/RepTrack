@@ -23,6 +23,8 @@ from app.models.errors import (
     AccessRequestRejected,
     EmailAlreadyRegistered,
     InvalidCredentials,
+    InvalidToken,
+    UsernameAlreadyRegistered,
 )
 
 from .email import EmailService
@@ -32,14 +34,15 @@ logger = logging.getLogger(__name__)
 password_hash = PasswordHash.recommended()
 
 
-async def get_latest_registration_token(
-    access_request_id: int,
+async def get_registration_token(
+    token_str: str,
     db: AsyncSession,
 ) -> RegistrationToken | None:
+    token_hash = password_hash.hash(token_str)
     token = (
         await db.execute(
             select(RegistrationToken)
-            .where(RegistrationToken.access_request_id == access_request_id)
+            .where(RegistrationToken.token_hash == token_hash)
             .order_by(RegistrationToken.created_at.desc())
             .limit(1)
         )
@@ -149,8 +152,47 @@ async def request_access(
     return False
 
 
+async def register(
+    token_str: str,
+    username: str,
+    password: str,
+    db: AsyncSession,
+) -> None:
+    logger.info(f"Registering new user {username}")
+
+    token = await get_registration_token(token_str, db)
+    if not token or token.is_expired():
+        raise InvalidToken()
+
+    access_request = (
+        await db.execute(
+            select(AccessRequest).where(AccessRequest.id == token.access_request_id)
+        )
+    ).scalar_one_or_none()
+    if not access_request or access_request.status != AccessRequestStatus.APPROVED:
+        raise InvalidToken()
+
+    existing_user = (
+        await db.execute(select(User).where(User.username == username))
+    ).scalar_one_or_none()
+    if existing_user:
+        raise UsernameAlreadyRegistered()
+
+    await invalidate_existing_tokens(access_request.id, db)
+
+    user = User(
+        username=username,
+        email=access_request.email,
+        first_name=access_request.first_name,
+        last_name=access_request.last_name,
+        password_hash=password_hash.hash(password),
+    )
+    db.add(user)
+    await db.commit()
+
+
 async def login(username: str, password: str, db: AsyncSession) -> LoginResult:
-    logger.info(f"Logging in for user: {username}")
+    logger.info(f"Logging in user {username}")
 
     user = await authenticate_user(username, password, db)
     if not user:
