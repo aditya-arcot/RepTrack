@@ -4,7 +4,6 @@ from datetime import datetime, timezone
 from typing import Tuple
 
 from fastapi import BackgroundTasks
-from pwdlib import PasswordHash
 from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,6 +12,7 @@ from app.core.security import (
     authenticate_user,
     create_access_token,
     create_refresh_token,
+    password_hash,
     verify_token,
 )
 from app.models.api import LoginResult
@@ -31,8 +31,6 @@ from app.models.errors import (
 from .email import EmailService
 
 logger = logging.getLogger(__name__)
-
-password_hash = PasswordHash.recommended()
 
 
 async def get_registration_token(
