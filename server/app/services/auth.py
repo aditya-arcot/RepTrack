@@ -169,12 +169,8 @@ async def register(
     if not token or token.is_used() or token.is_expired():
         raise InvalidToken()
 
-    access_request = (
-        await db.execute(
-            select(AccessRequest).where(AccessRequest.id == token.access_request_id)
-        )
-    ).scalar_one_or_none()
-    if not access_request or access_request.status != AccessRequestStatus.APPROVED:
+    access_request = token.access_request
+    if access_request.status != AccessRequestStatus.APPROVED:
         raise InvalidToken()
 
     existing_user = (
