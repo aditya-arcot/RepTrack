@@ -5,7 +5,7 @@ from typing import Tuple
 
 from fastapi import BackgroundTasks
 from pwdlib import PasswordHash
-from sqlalchemy import select, update
+from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import (
@@ -38,24 +38,29 @@ async def get_registration_token(
     token_str: str,
     db: AsyncSession,
 ) -> RegistrationToken | None:
-    token_hash = password_hash.hash(token_str)
-    token = (
-        await db.execute(
-            select(RegistrationToken)
-            .where(RegistrationToken.token_hash == token_hash)
-            .order_by(RegistrationToken.created_at.desc())
-            .limit(1)
+    tokens = (
+        (
+            await db.execute(
+                select(RegistrationToken)
+                .where(RegistrationToken.used_at.is_(None))
+                .where(RegistrationToken.expires_at > func.now())
+                .order_by(RegistrationToken.created_at.desc())
+            )
         )
-    ).scalar_one_or_none()
-    return token
+        .scalars()
+        .all()
+    )
+    for token in tokens:
+        if password_hash.verify(token_str, token.token_hash):
+            return token
 
 
-async def invalidate_existing_tokens(
+async def expire_existing_tokens(
     access_request_id: int,
     db: AsyncSession,
 ) -> None:
     logger.info(
-        f"Invalidating existing registration tokens for access request {access_request_id}"
+        f"Expiring existing registration tokens for access request {access_request_id}"
     )
 
     now = datetime.now(timezone.utc)
@@ -121,7 +126,7 @@ async def request_access(
             case AccessRequestStatus.REJECTED:
                 raise AccessRequestRejected()
             case AccessRequestStatus.APPROVED:
-                await invalidate_existing_tokens(existing_request.id, db)
+                await expire_existing_tokens(existing_request.id, db)
 
                 token_str, token = create_registration_token(existing_request)
                 db.add(token)
@@ -161,7 +166,7 @@ async def register(
     logger.info(f"Registering new user {username}")
 
     token = await get_registration_token(token_str, db)
-    if not token or token.is_expired():
+    if not token or token.is_used() or token.is_expired():
         raise InvalidToken()
 
     access_request = (
@@ -178,7 +183,8 @@ async def register(
     if existing_user:
         raise UsernameAlreadyRegistered()
 
-    await invalidate_existing_tokens(access_request.id, db)
+    token.used_at = datetime.now(timezone.utc)
+    await expire_existing_tokens(access_request.id, db)
 
     user = User(
         username=username,

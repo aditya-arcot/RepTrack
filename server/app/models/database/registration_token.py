@@ -60,5 +60,8 @@ class RegistrationToken(Base):
         "AccessRequest",
     )
 
+    def is_used(self) -> bool:
+        return self.used_at is not None
+
     def is_expired(self) -> bool:
         return datetime.now(timezone.utc) >= self.expires_at
