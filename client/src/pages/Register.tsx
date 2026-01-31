@@ -14,7 +14,7 @@ import { isHttpError } from '@/lib/http'
 import { notify } from '@/lib/notify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
 const zRegisterFormSchema = zRegisterRequest
@@ -30,7 +30,10 @@ type RegisterForm = z.infer<typeof zRegisterFormSchema>
 
 export function Register() {
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
 
+    const tokenSet = searchParams.has('token')
+    const token = searchParams.get('token') ?? ''
     const {
         register,
         handleSubmit,
@@ -40,6 +43,9 @@ export function Register() {
         resolver: zodResolver(zRegisterFormSchema),
         mode: 'onSubmit',
         reValidateMode: 'onChange',
+        defaultValues: {
+            token: token,
+        },
     })
 
     const onSubmit = async (form: RegisterForm) => {
@@ -50,7 +56,9 @@ export function Register() {
             if (isHttpError(error)) {
                 if (error.code === 'invalid_token') {
                     notify.error(error.detail)
+                    notify.info('If token is expired, request access again')
                     reset({ token: '', confirmPassword: '' })
+                    setSearchParams({})
                 } else if (error.code === 'username_already_registered') {
                     notify.error(error.detail)
                     reset({ username: '', confirmPassword: '' })
@@ -84,6 +92,7 @@ export function Register() {
                             <Label htmlFor="token">Token</Label>
                             <Input
                                 id="token"
+                                disabled={tokenSet}
                                 aria-invalid={!!errors.token}
                                 className={
                                     errors.token ? 'border-destructive' : ''
@@ -166,7 +175,7 @@ export function Register() {
                     </Button>
                     <div className="flex flex-col items-center gap-1 text-sm">
                         <div className="text-muted-foreground">
-                            Don&apos;t have an access code?{' '}
+                            Don&apos;t have a registration token?{' '}
                             <Link to="/request-access">
                                 <Button
                                     variant="link"
